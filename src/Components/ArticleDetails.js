@@ -7,6 +7,7 @@ import ArticleView from "./ArticleDetails.view";
 class ArticleDetails extends React.Component {
   state = {
     isLoading: true,
+    articleId: 11,
     contents: "",
     title: "",
     modifiedDate: "",
@@ -16,10 +17,13 @@ class ArticleDetails extends React.Component {
   };
 
   componentDidMount() {
-    const getArticleDetails = axios.get(`/wp-json/wp/v2/articles/11`);
-    const getAuthor = axios.get(`/wp-json/wp/v2/users?post=11`);
-    const getCategory = axios.get(`/wp-json/wp/v2/categories?post=11`);
-    const getTags = axios.get(`/wp-json/wp/v2/tags?post=11`);
+    const { articleId } = this.state;
+    const getArticleDetails = axios.get(`/wp-json/wp/v2/articles/${articleId}`);
+    const getAuthor = axios.get(`/wp-json/wp/v2/users?post=${articleId}`);
+    const getCategory = axios.get(
+      `/wp-json/wp/v2/categories?post=${articleId}`
+    );
+    const getTags = axios.get(`/wp-json/wp/v2/tags?post=${articleId}`);
 
     Promise.all([getArticleDetails, getAuthor, getCategory, getTags])
       .then(res => {
