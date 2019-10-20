@@ -3,6 +3,7 @@ import log from "loglevel";
 import axios from "axios";
 
 import ArticleView from "./ArticleDetails.view";
+import Loading from "./Loading";
 
 class ArticleDetails extends React.Component {
   state = {
@@ -56,7 +57,7 @@ class ArticleDetails extends React.Component {
     } = this.state;
 
     if (isLoading) {
-      return <h1>Loading</h1>;
+      return <Loading />;
     }
 
     return (

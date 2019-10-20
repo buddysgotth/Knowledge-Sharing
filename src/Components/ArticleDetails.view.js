@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Container, Section, Heading, Content } from "react-bulma-components";
 
 const ArticleView = ({
   contents,
@@ -21,15 +22,22 @@ const ArticleView = ({
   };
 
   return (
-    <div>
-      <h1>{title}</h1>
-      <div>Author: {author}</div>
-      <div>Category: {category}</div>
-      <div>Tags: {tags.join(", ")}</div>
-      <div>Updated date: {updatedDate.toLocaleString("en-US", options)}</div>
-      <h2>Description:</h2>
-      <div dangerouslySetInnerHTML={{ __html: contents }} />
-    </div>
+    <Section>
+      <Container className="has-text-centered">
+        <Heading>{title}</Heading>
+      </Container>
+      <Container>
+        <div>Author: {author}</div>
+        <div>Category: {category}</div>
+        <div>Tags: {tags.join(", ")}</div>
+        <div>Updated date: {updatedDate.toLocaleString("en-US", options)}</div>
+      </Container>
+      <Container>
+        <Content>
+          <div dangerouslySetInnerHTML={{ __html: contents }} />
+        </Content>
+      </Container>
+    </Section>
   );
 };
 
