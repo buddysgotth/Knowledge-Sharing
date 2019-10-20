@@ -7,6 +7,7 @@ import "bulma/css/bulma.min.css";
 
 import Home from "./Route/Home";
 import Article from "./Route/Article";
+import AllArticles from "./Route/AllArticles";
 
 const options = {
   fontFamilyBase:
@@ -36,10 +37,14 @@ function App() {
               <li>
                 <Link to="/article">Article Details</Link>
               </li>
+              <li>
+                <Link to="/articles">Articles List</Link>
+              </li>
             </ul>
           </nav>
           <Switch>
             <Route path="/article/" component={Article} />
+            <Route path="/articles/" component={AllArticles} />
             <Route path="/" exact component={Home} />
           </Switch>
         </div>
