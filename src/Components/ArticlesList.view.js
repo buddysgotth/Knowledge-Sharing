@@ -3,7 +3,14 @@ import PropTypes from "prop-types";
 import { Container, Section, Heading, Table } from "react-bulma-components";
 
 const ArticlesListView = ({ articles, authors, categories, tags }) => {
-  console.log(articles);
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric"
+  };
 
   return (
     <Section>
@@ -18,6 +25,7 @@ const ArticlesListView = ({ articles, authors, categories, tags }) => {
               <th>Author</th>
               <th>Category</th>
               <th>Tags</th>
+              <th>Updated Time</th>
               <th>Excerpt</th>
             </tr>
           </thead>
@@ -39,6 +47,9 @@ const ArticlesListView = ({ articles, authors, categories, tags }) => {
                   {tags
                     .filter(tag => tag.articleId === article.id)
                     .map(tag => tag.name.join(", "))}
+                </th>
+                <th>
+                  {new Date(article.modified).toLocaleString("en-US", options)}
                 </th>
                 <th>
                   <div
