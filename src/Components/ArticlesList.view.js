@@ -76,7 +76,8 @@ ArticlesListView.propTypes = {
       }),
       excerpt: PropTypes.shape({
         rendered: PropTypes.string
-      })
+      }),
+      modified: PropTypes.string
     })
   ),
   authors: PropTypes.arrayOf(
