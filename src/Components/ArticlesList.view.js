@@ -1,16 +1,26 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Container, Section, Heading, Table } from "react-bulma-components";
-import { Link } from "react-router-dom";
+import { Container, Section, Heading } from "react-bulma-components";
+
+import ArticleCard from "./ArticleCard";
 
 const ArticlesListView = ({ articles, authors, categories, tags }) => {
-  const options = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric"
+  const filterAuthorByArticleID = id => {
+    return authors
+      .filter(author => author.articleId === id)
+      .map(author => author.name)
+      .join();
+  };
+
+  const filterCategoryByArticleID = id => {
+    return categories
+      .filter(categories => categories.articleId === id)
+      .map(categories => categories.name)
+      .join();
+  };
+
+  const filterTagsByArticleID = id => {
+    return tags.filter(tag => tag.articleId === id).map(tag => tag.name);
   };
 
   return (
@@ -19,54 +29,18 @@ const ArticlesListView = ({ articles, authors, categories, tags }) => {
         <Heading>All Articles</Heading>
       </Container>
       <Container>
-        <Table>
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Author</th>
-              <th>Category</th>
-              <th>Tags</th>
-              <th>Updated Time</th>
-              <th>Excerpt</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {articles.map(article => (
-              <tr key={article.id}>
-                <th>{article.title.rendered}</th>
-                <th>
-                  {authors
-                    .filter(author => author.articleId === article.id)
-                    .map(author => author.name.join())}
-                </th>
-                <th>
-                  {categories
-                    .filter(categories => categories.articleId === article.id)
-                    .map(categories => categories.name.join())}
-                </th>
-                <th>
-                  {tags
-                    .filter(tag => tag.articleId === article.id)
-                    .map(tag => tag.name.join(", "))}
-                </th>
-                <th>
-                  {new Date(article.modified).toLocaleString("en-US", options)}
-                </th>
-                <th>
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: article.excerpt.rendered
-                    }}
-                  />
-                </th>
-                <th>
-                  <Link to={`/article/${article.id}`}>Read more</Link>
-                </th>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+        {articles.map(article => (
+          <ArticleCard
+            key={article.id}
+            id={article.id}
+            title={article.title.rendered}
+            author={filterAuthorByArticleID(article.id)}
+            category={filterCategoryByArticleID(article.id)}
+            tags={filterTagsByArticleID(article.id)}
+            modifiedDate={article.modified}
+            excerpt={article.excerpt.rendered}
+          />
+        ))}
       </Container>
     </Section>
   );
