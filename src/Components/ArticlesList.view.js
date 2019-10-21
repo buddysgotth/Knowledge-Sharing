@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Container, Section, Heading, Table } from "react-bulma-components";
+import { Link } from "react-router-dom";
 
 const ArticlesListView = ({ articles, authors, categories, tags }) => {
   const options = {
@@ -27,6 +28,7 @@ const ArticlesListView = ({ articles, authors, categories, tags }) => {
               <th>Tags</th>
               <th>Updated Time</th>
               <th>Excerpt</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -57,6 +59,9 @@ const ArticlesListView = ({ articles, authors, categories, tags }) => {
                       __html: article.excerpt.rendered
                     }}
                   />
+                </th>
+                <th>
+                  <Link to={`/article/${article.id}`}>Read more</Link>
                 </th>
               </tr>
             ))}

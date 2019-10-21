@@ -35,15 +35,12 @@ function App() {
                 <Link to="/">Home</Link>
               </li>
               <li>
-                <Link to="/article">Article Details</Link>
-              </li>
-              <li>
                 <Link to="/articles">Articles List</Link>
               </li>
             </ul>
           </nav>
           <Switch>
-            <Route path="/article/" component={Article} />
+            <Route path="/article/:id" component={Article} />
             <Route path="/articles/" component={AllArticles} />
             <Route path="/" exact component={Home} />
           </Switch>
