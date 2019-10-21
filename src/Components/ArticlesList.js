@@ -16,9 +16,9 @@ class ArticleDetails extends React.Component {
 
   componentDidMount() {
     const getArticlesList = axios.get(`/wp-json/wp/v2/articles/`);
-    const getAuthor = axios.get(`/wp-json/wp/v2/users`);
-    const getCategory = axios.get(`/wp-json/wp/v2/categories`);
-    const getTags = axios.get(`/wp-json/wp/v2/tags`);
+    const getAuthor = axios.get(`/wp-json/wp/v2/users?per_page=100`);
+    const getCategory = axios.get(`/wp-json/wp/v2/categories?per_page=100`);
+    const getTags = axios.get(`/wp-json/wp/v2/tags?per_page=100`);
 
     Promise.all([getArticlesList, getAuthor, getCategory, getTags])
       .then(res => {

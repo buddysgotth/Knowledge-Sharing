@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import log from "loglevel";
 import axios from "axios";
 
@@ -8,7 +9,7 @@ import Loading from "./Loading";
 class ArticleDetails extends React.Component {
   state = {
     isLoading: true,
-    articleId: 11,
+    articleId: this.props.articleId,
     contents: "",
     title: "",
     modifiedDate: "",
@@ -72,5 +73,9 @@ class ArticleDetails extends React.Component {
     );
   }
 }
+
+ArticleDetails.propTypes = {
+  articleId: PropTypes.string
+};
 
 export default ArticleDetails;
