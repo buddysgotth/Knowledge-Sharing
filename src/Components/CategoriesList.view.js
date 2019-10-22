@@ -19,9 +19,9 @@ const CategoriesView = ({ categoriesTree }) => {
           </AccordionItemHeading>
           <AccordionItemPanel className="bg-0">
             {parent.children.map(child => (
-              <div key={child.id}>
-                <Button className="is-white is-fullwidth">{child.name}</Button>
-              </div>
+              <Button key={child.id} className="is-white is-fullwidth">
+                {child.name}
+              </Button>
             ))}
           </AccordionItemPanel>
         </AccordionItem>
