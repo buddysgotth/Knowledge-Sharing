@@ -4,6 +4,7 @@ import { createGlobalStyle } from "styled-components";
 import reboot from "styled-reboot";
 import log from "loglevel";
 import "bulma/css/bulma.min.css";
+import "react-accessible-accordion/dist/fancy-example.css";
 
 import Home from "./Route/Home";
 import Article from "./Route/Article";
