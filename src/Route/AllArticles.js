@@ -3,7 +3,8 @@ import ArticlesList from "./../Components/ArticlesList";
 
 class AllArticles extends React.Component {
   render() {
-    return <ArticlesList />;
+    const searchParams = this.props.location.search;
+    return <ArticlesList search={searchParams} />;
   }
 }
 

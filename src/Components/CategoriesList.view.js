@@ -10,6 +10,10 @@ import {
 import { Button } from "react-bulma-components";
 
 const CategoriesView = ({ categoriesTree }) => {
+  const handleSetParams = e => {
+    window.location.search = `?categories=${e.target.value}`;
+  };
+
   return (
     <Accordion allowZeroExpanded={true} allowMultipleExpanded={true}>
       <AccordionItem>
@@ -26,7 +30,12 @@ const CategoriesView = ({ categoriesTree }) => {
               </AccordionItemHeading>
               <AccordionItemPanel className="bg-0">
                 {parent.children.map(child => (
-                  <Button key={child.id} className="is-white is-fullwidth">
+                  <Button
+                    key={child.id}
+                    className="is-white is-fullwidth"
+                    value={child.id}
+                    onClick={handleSetParams}
+                  >
                     {child.name}
                   </Button>
                 ))}

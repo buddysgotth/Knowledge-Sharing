@@ -1,7 +1,14 @@
 import React from "react";
+import PropTypes from "prop-types";
 import log from "loglevel";
 import axios from "axios";
-import { Container, Section, Heading, Columns } from "react-bulma-components";
+import {
+  Container,
+  Section,
+  Heading,
+  Columns,
+  Button
+} from "react-bulma-components";
 
 import Loading from "./Loading";
 import CategoriesList from "./CategoriesList";
@@ -13,11 +20,14 @@ class ArticlesList extends React.Component {
     articles: [],
     authors: [],
     categories: [],
-    tags: []
+    tags: [],
+    search: this.props.search
   };
 
   componentDidMount() {
-    const getArticlesList = axios.get(`/wp-json/wp/v2/articles`);
+    const getArticlesList = axios.get(
+      `/wp-json/wp/v2/articles${this.state.search}`
+    );
     const getAuthor = axios.get(`/wp-json/wp/v2/users?per_page=100`);
     const getCategory = axios.get(`/wp-json/wp/v2/categories?per_page=100`);
     const getTags = axios.get(`/wp-json/wp/v2/tags?per_page=100`);
@@ -40,8 +50,56 @@ class ArticlesList extends React.Component {
       .catch(error => log.error(error));
   }
 
+  handleInsertSubheading = params => {
+    const { categories } = this.state;
+    if (params !== "") {
+      const categoryName = categories
+        .filter(
+          category =>
+            category.id ===
+            Number(params.slice(params.indexOf("categories") + 11))
+        )
+        .map(category => category.name)
+        .join();
+      return (
+        <Columns>
+          <Columns.Column>
+            <Heading subtitle size={5}>
+              Search results of "Category = {categoryName}"
+            </Heading>
+          </Columns.Column>
+          <Columns.Column narrow>
+            <Button
+              size="small"
+              className="is-link is-outlined"
+              onClick={() => (window.location.search = "")}
+            >
+              Clear search
+            </Button>
+          </Columns.Column>
+        </Columns>
+      );
+    }
+    return null;
+  };
+
+  handleShowArticlesList = articles => {
+    const { authors, categories, tags } = this.state;
+    if (articles.length === 0) {
+      return <p className="has-text-centered has-text-grey">No result</p>;
+    }
+    return (
+      <CompareArticlesData
+        articles={articles}
+        authors={authors}
+        categories={categories}
+        tags={tags}
+      />
+    );
+  };
+
   render() {
-    const { isLoading, articles, authors, categories, tags } = this.state;
+    const { isLoading, categories, search, articles } = this.state;
 
     if (isLoading) {
       return <Loading />;
@@ -58,12 +116,8 @@ class ArticlesList extends React.Component {
               <CategoriesList categories={categories} />
             </Columns.Column>
             <Columns.Column>
-              <CompareArticlesData
-                articles={articles}
-                authors={authors}
-                categories={categories}
-                tags={tags}
-              />
+              {this.handleInsertSubheading(search)}
+              {this.handleShowArticlesList(articles)}
             </Columns.Column>
           </Columns>
         </Container>
@@ -71,5 +125,9 @@ class ArticlesList extends React.Component {
     );
   }
 }
+
+ArticlesList.propTypes = {
+  search: PropTypes.string
+};
 
 export default ArticlesList;
