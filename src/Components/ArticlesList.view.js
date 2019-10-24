@@ -1,17 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Container, Section, Heading, Columns } from "react-bulma-components";
 
 import ArticleCard from "./ArticleCard";
-import CategoriesList, { categoriesPropTypes } from "./CategoriesList";
 
-const ArticlesListView = ({
-  articles,
-  authors,
-  categoryNameList,
-  tags,
-  categoriesData
-}) => {
+const ArticlesListView = ({ articles, authors, categories, tags }) => {
   const filterAuthorByArticleID = id => {
     return authors
       .filter(author => author.articleId === id)
@@ -20,7 +12,7 @@ const ArticlesListView = ({
   };
 
   const filterCategoryByArticleID = id => {
-    return categoryNameList
+    return categories
       .filter(category => category.articleId === id)
       .map(category => category.name)
       .join();
@@ -31,32 +23,20 @@ const ArticlesListView = ({
   };
 
   return (
-    <Section>
-      <Container>
-        <Heading>All Articles</Heading>
-      </Container>
-      <Container>
-        <Columns breakpoint="tablet">
-          <Columns.Column size={3}>
-            <CategoriesList categories={categoriesData} />
-          </Columns.Column>
-          <Columns.Column>
-            {articles.map(article => (
-              <ArticleCard
-                key={article.id}
-                id={article.id}
-                title={article.title.rendered}
-                author={filterAuthorByArticleID(article.id)}
-                category={filterCategoryByArticleID(article.id)}
-                tags={filterTagsByArticleID(article.id)}
-                modifiedDate={article.modified}
-                excerpt={article.excerpt.rendered}
-              />
-            ))}
-          </Columns.Column>
-        </Columns>
-      </Container>
-    </Section>
+    <React.Fragment>
+      {articles.map(article => (
+        <ArticleCard
+          key={article.id}
+          id={article.id}
+          title={article.title.rendered}
+          author={filterAuthorByArticleID(article.id)}
+          category={filterCategoryByArticleID(article.id)}
+          tags={filterTagsByArticleID(article.id)}
+          modifiedDate={article.modified}
+          excerpt={article.excerpt.rendered}
+        />
+      ))}
+    </React.Fragment>
   );
 };
 
@@ -79,7 +59,7 @@ ArticlesListView.propTypes = {
       name: PropTypes.arrayOf(PropTypes.string)
     })
   ),
-  categoryNameList: PropTypes.arrayOf(
+  categories: PropTypes.arrayOf(
     PropTypes.shape({
       articleId: PropTypes.number,
       name: PropTypes.arrayOf(PropTypes.string)
@@ -90,8 +70,7 @@ ArticlesListView.propTypes = {
       articleId: PropTypes.number,
       name: PropTypes.arrayOf(PropTypes.string)
     })
-  ),
-  categoriesData: PropTypes.arrayOf(categoriesPropTypes)
+  )
 };
 
 export default ArticlesListView;

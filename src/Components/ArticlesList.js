@@ -1,11 +1,13 @@
 import React from "react";
 import log from "loglevel";
 import axios from "axios";
+import { Container, Section, Heading, Columns } from "react-bulma-components";
 
 import Loading from "./Loading";
+import CategoriesList from "./CategoriesList";
 import CompareArticlesData from "./CompareArticlesData";
 
-class ArticleDetails extends React.Component {
+class ArticlesList extends React.Component {
   state = {
     isLoading: true,
     articles: [],
@@ -15,7 +17,7 @@ class ArticleDetails extends React.Component {
   };
 
   componentDidMount() {
-    const getArticlesList = axios.get(`/wp-json/wp/v2/articles/`);
+    const getArticlesList = axios.get(`/wp-json/wp/v2/articles`);
     const getAuthor = axios.get(`/wp-json/wp/v2/users?per_page=100`);
     const getCategory = axios.get(`/wp-json/wp/v2/categories?per_page=100`);
     const getTags = axios.get(`/wp-json/wp/v2/tags?per_page=100`);
@@ -46,14 +48,28 @@ class ArticleDetails extends React.Component {
     }
 
     return (
-      <CompareArticlesData
-        articles={articles}
-        authors={authors}
-        categories={categories}
-        tags={tags}
-      />
+      <Section>
+        <Container>
+          <Heading>All Articles</Heading>
+        </Container>
+        <Container>
+          <Columns breakpoint="tablet">
+            <Columns.Column size={3}>
+              <CategoriesList categories={categories} />
+            </Columns.Column>
+            <Columns.Column>
+              <CompareArticlesData
+                articles={articles}
+                authors={authors}
+                categories={categories}
+                tags={tags}
+              />
+            </Columns.Column>
+          </Columns>
+        </Container>
+      </Section>
     );
   }
 }
 
-export default ArticleDetails;
+export default ArticlesList;
