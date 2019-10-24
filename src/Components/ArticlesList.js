@@ -7,7 +7,7 @@ import Loading from "./Loading";
 import CategoriesList from "./CategoriesList";
 import CompareArticlesData from "./CompareArticlesData";
 
-class ArticleDetails extends React.Component {
+class ArticlesList extends React.Component {
   state = {
     isLoading: true,
     articles: [],
@@ -72,4 +72,4 @@ class ArticleDetails extends React.Component {
   }
 }
 
-export default ArticleDetails;
+export default ArticlesList;
