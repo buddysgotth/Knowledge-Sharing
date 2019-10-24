@@ -52,9 +52,8 @@ const CompareArticlesData = ({ articles, authors, categories, tags }) => {
     <ArticlesListView
       articles={articles}
       authors={authorNameList}
-      categoryNameList={categoryNameList}
+      categories={categoryNameList}
       tags={tagsNameList}
-      categoriesData={categories}
     />
   );
 };

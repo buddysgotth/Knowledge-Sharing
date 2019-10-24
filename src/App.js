@@ -12,7 +12,8 @@ import AllArticles from "./Route/AllArticles";
 
 const options = {
   fontFamilyBase:
-    'Kanit, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"'
+    'Kanit, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+  linkHoverDecoration: "none"
 };
 
 const rebootCss = reboot(options);
