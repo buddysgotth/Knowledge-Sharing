@@ -52,7 +52,7 @@ class ArticlesList extends React.Component {
 
   handleInsertSubheading = params => {
     const { categories } = this.state;
-    if (params !== "") {
+    if (params) {
       const categoryName = categories
         .filter(
           category =>
