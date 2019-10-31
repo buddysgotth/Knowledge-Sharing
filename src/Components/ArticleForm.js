@@ -50,7 +50,7 @@ class ArticleForm extends React.Component {
     this.state = {
       title: "",
       category: "",
-      tags: [],
+      tags: null,
       content: "",
       isCreated: "none",
       isLoading: false

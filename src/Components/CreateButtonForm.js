@@ -14,7 +14,7 @@ const CreateButtonForm = ({ onSubmit, data }) => {
     if (
       title &&
       (category && category !== "0") &&
-      tags.length &&
+      tags &&
       (content && content !== "<p><br></p>")
     ) {
       return false;
