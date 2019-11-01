@@ -3,12 +3,15 @@ import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 import reboot from "styled-reboot";
 import log from "loglevel";
-import "bulma/css/bulma.min.css";
+
+import "react-quill/dist/quill.snow.css";
 import "react-accessible-accordion/dist/fancy-example.css";
+import "bulma/css/bulma.min.css";
 
 import Home from "./Route/Home";
 import Article from "./Route/Article";
 import AllArticles from "./Route/AllArticles";
+import AddArticle from "./Route/Add";
 
 const options = {
   fontFamilyBase:
@@ -39,11 +42,15 @@ function App() {
               <li>
                 <Link to="/articles">Articles List</Link>
               </li>
+              <li>
+                <Link to="/add">Create an Article</Link>
+              </li>
             </ul>
           </nav>
           <Switch>
             <Route path="/article/:id" component={Article} />
             <Route path="/articles/" component={AllArticles} />
+            <Route path="/add/" component={AddArticle} />
             <Route path="/" exact component={Home} />
           </Switch>
         </div>
