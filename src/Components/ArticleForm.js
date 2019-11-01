@@ -63,14 +63,23 @@ class ArticleForm extends React.Component {
     if (status === "publish") {
       return (
         <Tile kind="parent" notification color="success">
-          <Heading subtitle>Create Article Complete</Heading>
+          <Heading subtitle>Create this article complete</Heading>
         </Tile>
       );
     }
     if (status === "draft") {
       return (
         <Tile kind="parent" notification color="info">
-          <Heading subtitle>Draft Article Complete</Heading>
+          <Heading subtitle>Draft this article complete</Heading>
+        </Tile>
+      );
+    }
+    if (status === "failed") {
+      return (
+        <Tile kind="parent" notification color="danger">
+          <Heading subtitle>
+            Cannot creating this article. Please try again later.
+          </Heading>
         </Tile>
       );
     }
@@ -113,7 +122,11 @@ class ArticleForm extends React.Component {
         log.debug(res);
         this.setState({ status: status });
       })
-      .catch(error => log.error());
+      .catch(error => {
+        log.error();
+        this.setState({ status: "failed" });
+      });
+    window.scrollTo(0, 0);
   };
 
   render() {
