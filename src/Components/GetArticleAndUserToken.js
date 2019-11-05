@@ -6,15 +6,19 @@ import Loading from "./Loading";
 
 import ArticleForm from "./ArticleForm";
 
-class CreateArticle extends React.Component {
+class GetArticleAndUserToken extends React.Component {
   state = {
     isLoading: true,
     categoriesTree: [],
     tags: [],
-    token: ""
+    token: "",
+    articleData: null
   };
 
   componentDidMount() {
+    const getArticle = axios.get(
+      `/wp-json/wp/v2/articles/${this.props.articleId}`
+    );
     const getCategory = axios.get(`/wp-json/wp/v2/categories?per_page=100`);
     const getTags = axios.get(`/wp-json/wp/v2/tags?per_page=100`);
     const getToken = axios.post(
@@ -27,7 +31,7 @@ class CreateArticle extends React.Component {
         }
       }
     );
-    Promise.all([getCategory, getTags, getToken]).then(res => {
+    Promise.all([getCategory, getTags, getToken, getArticle]).then(res => {
       const categories = res[0].data;
       const tempCategoriesTree = categories
         .filter(category => category.parent === 0 && category.id !== 1)
@@ -56,28 +60,35 @@ class CreateArticle extends React.Component {
           label: tag.name,
           id: tag.id
         })),
-        token: res[2].data.token
+        token: res[2].data.token,
+        articleData: res[3].data
       });
       log.debug(this.state.token);
       log.debug("Categories Tree:", this.state.categoriesTree);
       log.debug("Tags:", this.state.tags);
+      log.debug("Article:", this.state.articleData);
     });
   }
 
   render() {
-    const { isLoading, categoriesTree, tags, token } = this.state;
+    const { isLoading, categoriesTree, tags, token, articleData } = this.state;
     if (isLoading) return <Loading />;
     return (
       <Section>
         <Container>
-          <Heading>Create a New Article</Heading>
+          <Heading>Edit Article</Heading>
         </Container>
         <Container>
-          <ArticleForm categories={categoriesTree} tags={tags} token={token} />
+          <ArticleForm
+            categories={categoriesTree}
+            tags={tags}
+            token={token}
+            articleData={articleData}
+          />
         </Container>
       </Section>
     );
   }
 }
 
-export default CreateArticle;
+export default GetArticleAndUserToken;

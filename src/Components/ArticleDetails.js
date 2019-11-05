@@ -49,6 +49,7 @@ class ArticleDetails extends React.Component {
   render() {
     const {
       isLoading,
+      articleId,
       contents,
       title,
       modifiedDate,
@@ -63,6 +64,7 @@ class ArticleDetails extends React.Component {
 
     return (
       <ArticleView
+        id={articleId}
         contents={contents}
         title={title}
         modifiedDate={modifiedDate}

@@ -9,6 +9,7 @@ import TitleForm from "./TitleForm";
 import CategoryForm, { CategoriesPropTypes } from "./CategoryForm";
 import TagsInput, { TagsPropTypes } from "./TagsInput";
 import CreateButtonForm from "./CreateButtonForm";
+import EditButtonForm from "./EditButtonForm";
 
 const modules = {
   toolbar: [
@@ -40,13 +41,16 @@ const formats = [
 class ArticleForm extends React.Component {
   constructor(props) {
     super(props);
+    const { articleData, tags } = this.props;
     this.state = {
-      title: "",
-      category: "",
-      tags: null,
-      content: "",
+      title: articleData.title.rendered,
+      category: articleData.categories[0].toString(),
+      tags: tags.filter(tag => articleData.tags.includes(tag.id)),
+      content: articleData.content.rendered,
       status: "none"
     };
+    this.disabledForm = this.disabledForm.bind(this);
+    this.showArticleCreatedStatus = this.showArticleCreatedStatus.bind(this);
     this.handleTagsChange = this.handleTagsChange.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
     this.textEditorOnChange = this.textEditorOnChange.bind(this);
@@ -64,6 +68,13 @@ class ArticleForm extends React.Component {
       return (
         <Tile kind="parent" notification color="success">
           <Heading subtitle>Create this article complete</Heading>
+        </Tile>
+      );
+    }
+    if (status === "updated") {
+      return (
+        <Tile kind="parent" notification color="success">
+          <Heading subtitle>Update this article complete</Heading>
         </Tile>
       );
     }
@@ -85,6 +96,25 @@ class ArticleForm extends React.Component {
     }
     return null;
   };
+  renderButtonForm = () => {
+    const { articleData } = this.props;
+    const { title, category, tags, content } = this.state;
+    if (articleData.id) {
+      return (
+        <EditButtonForm
+          onSubmit={this.handleSubmit}
+          id={articleData.id}
+          data={{ title, category, tags, content }}
+        />
+      );
+    }
+    return (
+      <CreateButtonForm
+        onSubmit={this.handleSubmit}
+        data={{ title, category, tags, content }}
+      />
+    );
+  };
   handleTagsChange = tags => {
     this.setState({ status: "none", tags: tags });
   };
@@ -97,35 +127,65 @@ class ArticleForm extends React.Component {
   handleSubmit = async e => {
     log.debug(e.target.value);
     const { title, category, tags, content } = this.state;
+    const { articleData } = this.props;
     const status = e.target.value;
     this.setState({ status: "creating" });
-    await axios
-      .post(
-        "/wp-json/wp/v2/articles",
-        {
-          title: title,
-          categories: [Number(category)],
-          tags: tags.map(tag => tag.id),
-          content: content,
-          author: 1,
-          status: e.target.value
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: `Bearer ${this.props.token}`
+    if (articleData.id) {
+      await axios
+        .post(
+          `/wp-json/wp/v2/articles/${articleData.id}`,
+          {
+            title: title,
+            categories: [Number(category)],
+            tags: tags.map(tag => tag.id),
+            content: content,
+            status: e.target.value
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              Authorization: `Bearer ${this.props.token}`
+            }
           }
-        }
-      )
-      .then(res => {
-        log.debug(res);
-        this.setState({ status: status });
-      })
-      .catch(error => {
-        log.error();
-        this.setState({ status: "failed" });
-      });
+        )
+        .then(res => {
+          log.debug(res);
+          this.setState({ status: "updated" });
+        })
+        .catch(error => {
+          log.error();
+          this.setState({ status: "failed" });
+        });
+    } else {
+      await axios
+        .post(
+          "/wp-json/wp/v2/articles",
+          {
+            title: title,
+            categories: [Number(category)],
+            tags: tags.map(tag => tag.id),
+            content: content,
+            author: 1,
+            status: e.target.value
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              Authorization: `Bearer ${this.props.token}`
+            }
+          }
+        )
+        .then(res => {
+          log.debug(res);
+          this.setState({ status: status });
+        })
+        .catch(error => {
+          log.error();
+          this.setState({ status: "failed" });
+        });
+    }
     window.scrollTo(0, 0);
   };
 
@@ -165,10 +225,7 @@ class ArticleForm extends React.Component {
               readOnly={this.disabledForm(status)}
             />
           </Form.Field>
-          <CreateButtonForm
-            onSubmit={this.handleSubmit}
-            data={{ title, category, tags, content }}
-          />
+          {this.renderButtonForm()}
         </fieldset>
       </React.Fragment>
     );
@@ -178,7 +235,29 @@ class ArticleForm extends React.Component {
 ArticleForm.propTypes = {
   categories: CategoriesPropTypes,
   tags: TagsPropTypes,
-  token: PropTypes.string
+  token: PropTypes.string,
+  articleData: PropTypes.shape({
+    id: PropTypes.number,
+    title: PropTypes.shape({
+      rendered: PropTypes.string
+    }),
+    categories: PropTypes.arrayOf(PropTypes.number),
+    tags: PropTypes.arrayOf(PropTypes.number),
+    content: PropTypes.shape({
+      rendered: PropTypes.string
+    }),
+    status: PropTypes.string
+  })
+};
+
+ArticleForm.defaultProps = {
+  articleData: {
+    id: null,
+    title: { rendered: "" },
+    categories: [0],
+    tags: [],
+    content: { rendered: "" }
+  }
 };
 
 export default ArticleForm;

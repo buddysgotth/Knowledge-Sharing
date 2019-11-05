@@ -1,8 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Container, Section, Heading, Content } from "react-bulma-components";
+import { Link } from "react-router-dom";
+import {
+  Container,
+  Section,
+  Heading,
+  Content,
+  Box
+} from "react-bulma-components";
 
 const ArticleView = ({
+  id,
   contents,
   title,
   modifiedDate,
@@ -23,25 +31,33 @@ const ArticleView = ({
 
   return (
     <Section>
-      <Container className="has-text-centered">
-        <Heading>{title}</Heading>
-      </Container>
       <Container>
-        <div>Author: {author}</div>
-        <div>Category: {category}</div>
-        <div>Tags: {tags.join(", ")}</div>
-        <div>Updated date: {updatedDate.toLocaleString("en-US", options)}</div>
-      </Container>
-      <Container>
-        <Content>
-          <div dangerouslySetInnerHTML={{ __html: contents }} />
-        </Content>
+        <Box className="is-shadowless is-marginless">
+          <Heading className="has-text-centered">{title}</Heading>
+        </Box>
+        <Box className="is-shadowless is-marginless">
+          <div>Author: {author}</div>
+          <div>Category: {category}</div>
+          <div>Tags: {tags.join(", ")}</div>
+          <div>
+            Updated date: {updatedDate.toLocaleString("en-US", options)}
+          </div>
+          <div>
+            <Link to={`/edit/${id}`}>Edit Article</Link>
+          </div>
+        </Box>
+        <Box className="is-shadowless is-marginless">
+          <Content>
+            <div dangerouslySetInnerHTML={{ __html: contents }} />
+          </Content>
+        </Box>
       </Container>
     </Section>
   );
 };
 
 ArticleView.propTypes = {
+  id: PropTypes.string,
   contents: PropTypes.string,
   title: PropTypes.string,
   modifiedDate: PropTypes.string,

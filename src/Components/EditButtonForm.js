@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Form, Button } from "react-bulma-components";
 
-const CreateButtonForm = ({ onSubmit, data }) => {
+const EditButtonForm = ({ onSubmit, id, data }) => {
   const handleSubmit = event => {
     onSubmit(event);
   };
@@ -25,22 +25,14 @@ const CreateButtonForm = ({ onSubmit, data }) => {
     <Form.Field kind="group" className="is-grouped-right">
       <Button.Group>
         <Button
-          color="info"
-          value="draft"
-          onClick={handleSubmit}
-          disabled={isDisabled(data)}
-        >
-          Draft Post
-        </Button>
-        <Button
           color="success"
           value="publish"
           onClick={handleSubmit}
           disabled={isDisabled(data)}
         >
-          Create Post
+          Update
         </Button>
-        <Link to="/articles">
+        <Link to={`/article/${id}`}>
           <Button color="light">Back</Button>
         </Link>
       </Button.Group>
@@ -48,8 +40,9 @@ const CreateButtonForm = ({ onSubmit, data }) => {
   );
 };
 
-CreateButtonForm.propTypes = {
+EditButtonForm.propTypes = {
   onSubmit: PropTypes.func,
+  id: PropTypes.number,
   data: PropTypes.shape({
     title: PropTypes.string,
     category: PropTypes.string,
@@ -58,4 +51,4 @@ CreateButtonForm.propTypes = {
   })
 };
 
-export default CreateButtonForm;
+export default EditButtonForm;
