@@ -11,7 +11,7 @@ import { Button } from "react-bulma-components";
 
 const CategoriesView = ({ categoriesTree }) => {
   const handleSetParams = e => {
-    window.location.search = `?categories=${e.target.value}`;
+    window.location.search = `?categories=${e.target.value}&page=1`;
   };
 
   return (

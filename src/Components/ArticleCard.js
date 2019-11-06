@@ -23,6 +23,8 @@ const ArticleCard = ({
     second: "numeric"
   };
 
+  const preview = excerpt.replace(/<p>|<\/p>/gi, "");
+
   return (
     <Box>
       <Content>
@@ -32,7 +34,11 @@ const ArticleCard = ({
         <div>Author: {author}</div>
         <div>Updated Date: {updatedDate.toLocaleString("en-US", options)}</div>
         <br />
-        <div dangerouslySetInnerHTML={{ __html: excerpt }} />
+        <div
+          dangerouslySetInnerHTML={{
+            __html: "<p>" + preview.slice(0, 150) + "... </p>"
+          }}
+        />
         <Link to={`/article/${id}`}>Read More...</Link>
       </Content>
     </Box>
