@@ -13,6 +13,7 @@ import {
 import Loading from "./Loading";
 import CategoriesList from "./CategoriesList";
 import CompareArticlesData from "./CompareArticlesData";
+import PaginationController from "./PaginationController";
 
 class ArticlesList extends React.Component {
   state = {
@@ -21,13 +22,14 @@ class ArticlesList extends React.Component {
     authors: [],
     categories: [],
     tags: [],
-    search: this.props.search
+    params: this.props.search,
+    currentPage: 1,
+    totalPages: 1
   };
 
   componentDidMount() {
-    const getArticlesList = axios.get(
-      `/wp-json/wp/v2/articles${this.state.search}`
-    );
+    const { params } = this.state;
+    const getArticlesList = axios.get(`/wp-json/wp/v2/articles${params}`);
     const getAuthor = axios.get(`/wp-json/wp/v2/users?per_page=100`);
     const getCategory = axios.get(`/wp-json/wp/v2/categories?per_page=100`);
     const getTags = axios.get(`/wp-json/wp/v2/tags?per_page=100`);
@@ -39,10 +41,12 @@ class ArticlesList extends React.Component {
           articles: res[0].data,
           authors: res[1].data,
           categories: res[2].data,
-          tags: res[3].data
+          tags: res[3].data,
+          currentPage: Number(params.slice(params.indexOf("page") + 5)),
+          totalPages: Number(res[0].headers["x-wp-totalpages"])
         });
 
-        log.debug("All articles:", res[0].data);
+        log.debug("All articles:", res[0]);
         log.debug("Authors:", res[1].data);
         log.debug("Categories:", res[2].data);
         log.debug("Tags:", res[3].data);
@@ -50,14 +54,29 @@ class ArticlesList extends React.Component {
       .catch(error => log.error(error));
   }
 
-  handleInsertSubheading = params => {
+  handlePageChange = page => {
+    const { params } = this.state;
+    if (params.indexOf("&page") !== -1) {
+      const oldParams = params.slice(0, params.indexOf("&page"));
+      window.location.search = oldParams + `&page=${page}`;
+    }
+    const oldParams = params.slice(0, params.indexOf("page"));
+    window.location.search = oldParams + `page=${page}`;
+  };
+
+  handleShowSubheading = params => {
     const { categories } = this.state;
-    if (params) {
+    if (params.indexOf("categories") !== -1) {
       const categoryName = categories
         .filter(
           category =>
             category.id ===
-            Number(params.slice(params.indexOf("categories") + 11))
+            Number(
+              params.slice(
+                params.indexOf("categories") + 11,
+                params.indexOf("&page")
+              )
+            )
         )
         .map(category => category.name)
         .join();
@@ -72,7 +91,7 @@ class ArticlesList extends React.Component {
             <Button
               size="small"
               className="is-link is-outlined"
-              onClick={() => (window.location.search = "")}
+              onClick={() => (window.location.search = "?page=1")}
             >
               Clear search
             </Button>
@@ -98,8 +117,22 @@ class ArticlesList extends React.Component {
     );
   };
 
+  handleShowPaginationController = () => {
+    const { currentPage, totalPages } = this.state;
+    if (totalPages) {
+      return (
+        <PaginationController
+          current={currentPage}
+          total={totalPages}
+          onChange={this.handlePageChange}
+        />
+      );
+    }
+    return null;
+  };
+
   render() {
-    const { isLoading, categories, search, articles } = this.state;
+    const { isLoading, categories, articles, params } = this.state;
 
     if (isLoading) {
       return <Loading />;
@@ -116,8 +149,9 @@ class ArticlesList extends React.Component {
               <CategoriesList categories={categories} />
             </Columns.Column>
             <Columns.Column>
-              {this.handleInsertSubheading(search)}
+              {this.handleShowSubheading(params)}
               {this.handleShowArticlesList(articles)}
+              {this.handleShowPaginationController()}
             </Columns.Column>
           </Columns>
         </Container>

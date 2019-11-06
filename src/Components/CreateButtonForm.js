@@ -40,7 +40,7 @@ const CreateButtonForm = ({ onSubmit, data }) => {
         >
           Create Post
         </Button>
-        <Link to="/articles">
+        <Link to="/articles?page=1">
           <Button color="light">Back</Button>
         </Link>
       </Button.Group>
