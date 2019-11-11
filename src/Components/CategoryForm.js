@@ -28,7 +28,7 @@ const CategoryForm = ({ onChange, value, categories }) => {
         className="is-fullwidth"
         onChange={handleChange}
       >
-        <option value="0">Please select the category</option>
+        <option value="0">Select a category</option>
         {handleShowCategoriesOption(categories)}
       </Form.Select>
     </Form.Field>
