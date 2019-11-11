@@ -111,15 +111,16 @@ class ArticlesList extends React.Component {
       if (params.indexOf("search") !== -1) {
         const searchParams = params.slice(
           params.indexOf("search"),
-          params.indexOf("page")
+          params.indexOf("&")
         );
         oldParams = params.slice(
-          1 + searchParams.length,
+          2 + searchParams.length,
           params.indexOf("page")
         );
       } else {
         oldParams = params.slice(1, params.indexOf("page"));
       }
+      log.debug(oldParams);
       window.location.search = `?search=${searchInput}&${oldParams}page=1`;
     }
   };
