@@ -2,6 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import ArticlesListView from "./ArticlesList.view";
 
+import { Columns } from "react-bulma-components";
+
 const CompareArticlesData = ({ articles, authors, categories, tags }) => {
   const authorIdList = articles.map(article => ({
     articleId: article.id,
@@ -49,12 +51,14 @@ const CompareArticlesData = ({ articles, authors, categories, tags }) => {
   }));
 
   return (
-    <ArticlesListView
-      articles={articles}
-      authors={authorNameList}
-      categories={categoryNameList}
-      tags={tagsNameList}
-    />
+    <Columns>
+      <ArticlesListView
+        articles={articles}
+        authors={authorNameList}
+        categories={categoryNameList}
+        tags={tagsNameList}
+      />
+    </Columns>
   );
 };
 
