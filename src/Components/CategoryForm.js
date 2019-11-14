@@ -20,18 +20,15 @@ const CategoryForm = ({ onChange, value, categories }) => {
   };
 
   return (
-    <Form.Field>
-      <Form.Label>Category</Form.Label>
-      <Form.Select
-        name="category"
-        value={value}
-        className="is-fullwidth"
-        onChange={handleChange}
-      >
-        <option value="0">Select a category</option>
-        {handleShowCategoriesOption(categories)}
-      </Form.Select>
-    </Form.Field>
+    <Form.Select
+      name="category"
+      value={value}
+      className="is-fullwidth"
+      onChange={handleChange}
+    >
+      <option value="0">Select a Category</option>
+      {handleShowCategoriesOption(categories)}
+    </Form.Select>
   );
 };
 

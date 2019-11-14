@@ -199,11 +199,14 @@ class ArticleForm extends React.Component {
           <TitleForm onChange={this.handleOnChange} value={title} />
           <Columns>
             <Columns.Column>
-              <CategoryForm
-                onChange={this.handleOnChange}
-                value={category}
-                categories={categories}
-              />
+              <Form.Field>
+                <Form.Label>Category</Form.Label>
+                <CategoryForm
+                  onChange={this.handleOnChange}
+                  value={category}
+                  categories={categories}
+                />
+              </Form.Field>
             </Columns.Column>
             <Columns.Column>
               <TagsInput
