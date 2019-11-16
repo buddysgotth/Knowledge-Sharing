@@ -1,8 +1,9 @@
-import React from "react";
+import React from 'react';
+import TagCloudGenerator from './../Components/TagCloudGenerator';
 
 class Home extends React.Component {
   render() {
-    return <h1>Welcome to SKOOLDIO KNOW-SHARE ^^</h1>;
+    return <TagCloudGenerator />;
   }
 }
 
