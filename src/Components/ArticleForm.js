@@ -4,6 +4,11 @@ import log from 'loglevel';
 import PropTypes from 'prop-types';
 import { Form, Columns, Tile, Heading, Content } from 'react-bulma-components';
 import ReactQuill from 'react-quill';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faExclamationTriangle,
+  faCheck
+} from '@fortawesome/free-solid-svg-icons';
 
 import TitleForm from './TitleForm';
 import CategoryForm, { CategoriesPropTypes } from './CategoryForm';
@@ -67,21 +72,27 @@ class ArticleForm extends React.Component {
     if (status === 'publish') {
       return (
         <Tile kind="parent" notification color="success">
-          <Heading subtitle>Create this article complete</Heading>
+          <Heading subtitle>
+            <FontAwesomeIcon icon={faCheck} /> สร้างบทความสำเร็จ
+          </Heading>
         </Tile>
       );
     }
     if (status === 'updated') {
       return (
         <Tile kind="parent" notification color="success">
-          <Heading subtitle>Update this article complete</Heading>
+          <Heading subtitle>
+            <FontAwesomeIcon icon={faCheck} /> แก้ไขบทความสำเร็จ
+          </Heading>
         </Tile>
       );
     }
     if (status === 'draft') {
       return (
         <Tile kind="parent" notification color="info">
-          <Heading subtitle>Draft this article complete</Heading>
+          <Heading subtitle>
+            <FontAwesomeIcon icon={faCheck} /> ร่างบทความสำเร็จ
+          </Heading>
         </Tile>
       );
     }
@@ -89,7 +100,8 @@ class ArticleForm extends React.Component {
       return (
         <Tile kind="parent" notification color="danger">
           <Heading subtitle>
-            Cannot creating this article. Please try again later.
+            <FontAwesomeIcon icon={faExclamationTriangle} />{' '}
+            ไม่สามารถสร้างบทความได้ กรุณาตรวจสอบและลองใหม่อีกครั้ง
           </Heading>
         </Tile>
       );
