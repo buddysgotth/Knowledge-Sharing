@@ -12,13 +12,19 @@ class TagCloudGenerator extends React.Component {
   };
 
   componentDidMount() {
-    axios.get(`/wp-json/wp/v2/tags?orderby=count&order=desc&per_page=25`).then(res => {
-      this.setState({
-        tags: res.data.map(tag => ({ text: tag.name, value: tag.count, id: tag.id })),
-        isLoading: false
+    axios
+      .get(`/wp-json/wp/v2/tags?orderby=count&order=desc&per_page=25`)
+      .then(res => {
+        this.setState({
+          tags: res.data.map(tag => ({
+            text: tag.name,
+            value: tag.count,
+            id: tag.id
+          })),
+          isLoading: false
+        });
+        log.debug('tags:', this.state.tags);
       });
-      log.debug('tags:', this.state.tags);
-    });
   }
 
   render() {

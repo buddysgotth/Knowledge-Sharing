@@ -1,20 +1,20 @@
-import React from "react";
-import PropTypes from "prop-types";
-import log from "loglevel";
-import axios from "axios";
+import React from 'react';
+import PropTypes from 'prop-types';
+import log from 'loglevel';
+import axios from 'axios';
 
-import ArticleView from "./ArticleDetails.view";
-import Loading from "./Loading";
+import ArticleView from './ArticleDetails.view';
+import Loading from './Loading';
 
 class ArticleDetails extends React.Component {
   state = {
     isLoading: true,
     articleId: this.props.articleId,
-    contents: "",
-    title: "",
-    modifiedDate: "",
-    author: "",
-    category: "",
+    contents: '',
+    title: '',
+    modifiedDate: '',
+    author: '',
+    category: '',
     tags: []
   };
 
@@ -38,10 +38,10 @@ class ArticleDetails extends React.Component {
           category: res[2].data[0].name,
           tags: res[3].data.map(tag => tag.name)
         });
-        log.debug("Details:", res[0].data);
-        log.debug("Author:", res[1].data);
-        log.debug("Category:", res[2].data);
-        log.debug("Tags:", res[3].data);
+        log.debug('Details:', res[0].data);
+        log.debug('Author:', res[1].data);
+        log.debug('Category:', res[2].data);
+        log.debug('Tags:', res[3].data);
       })
       .catch(error => log.error(error));
   }

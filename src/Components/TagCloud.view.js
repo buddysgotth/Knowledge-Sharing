@@ -1,11 +1,11 @@
 import 'd3-transition';
 import { select } from 'd3-selection';
 import React from 'react';
-import { Section, Container, Heading } from 'react-bulma-components';
+import { Container, Heading } from 'react-bulma-components';
 import ReactWordcloud from 'react-wordcloud';
 
 const options = {
-  colors: ['blue', 'red', 'orange', 'green', 'purple'],
+  colors: ['navy', 'orange', 'black'],
   enableTooltip: true,
   deterministic: true,
   fontFamily: 'Kanit',
@@ -50,7 +50,7 @@ class TagCloudView extends React.Component {
   };
 
   callbacks = {
-    getWordTooltip: word => `"${word.text}" : ${word.value}`,
+    getWordTooltip: word => `${word.text} : ${word.value}`,
     onWordClick: this.getCallback('onWordClick'),
     onWordMouseOut: this.getCallback('onWordMouseOut'),
     onWordMouseOver: this.getCallback('onWordMouseOver')
@@ -66,22 +66,24 @@ class TagCloudView extends React.Component {
     const { tags } = this.props;
     const { width } = this.state;
     return (
-      <Section>
-        <Container>
-          <Heading className='has-text-centered'>Skooldio KNOWSHARE</Heading>
-          <Heading subtitle className='has-text-centered'>
-            What would like to find...
-          </Heading>
+      <React.Fragment>
+        <Container className="has-text-centered">
+          <img src="./know-share-logo-v2.svg" alt="logo" className="logo" />
+          <Heading>รู้แล้ว... อยากบอกต่อ</Heading>
         </Container>
-        <Container>
+        <Container className="tag-cloud has-text-centered">
+          <Heading subtitle>คุณต้องการอ่านบทความอะไร...</Heading>
           <ReactWordcloud
             callbacks={this.callbacks}
             words={tags}
-            options={{ ...options, fontSizes: width <= 720 ? [20, 45] : [30, 90] }}
+            options={{
+              ...options,
+              fontSizes: width <= 720 ? [20, 45] : [30, 90]
+            }}
             minSize={[300, 450]}
           />
         </Container>
-      </Section>
+      </React.Fragment>
     );
   }
 

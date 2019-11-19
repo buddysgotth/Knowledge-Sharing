@@ -1,17 +1,17 @@
-import React from "react";
-import axios from "axios";
-import log from "loglevel";
-import { Section, Container, Heading } from "react-bulma-components";
-import Loading from "./Loading";
+import React from 'react';
+import axios from 'axios';
+import log from 'loglevel';
+import { Container, Heading } from 'react-bulma-components';
+import Loading from './Loading';
 
-import ArticleForm from "./ArticleForm";
+import ArticleForm from './ArticleForm';
 
 class GetArticleAndUserToken extends React.Component {
   state = {
     isLoading: true,
     categoriesTree: [],
     tags: [],
-    token: "",
+    token: '',
     articleData: null
   };
 
@@ -22,12 +22,12 @@ class GetArticleAndUserToken extends React.Component {
     const getCategory = axios.get(`/wp-json/wp/v2/categories?per_page=100`);
     const getTags = axios.get(`/wp-json/wp/v2/tags?per_page=100`);
     const getToken = axios.post(
-      "/wp-json/jwt-auth/v1/token",
-      { username: "admin-kb", password: "know-share-kb" },
+      '/wp-json/jwt-auth/v1/token',
+      { username: 'admin-kb', password: 'know-share-kb' },
       {
         headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json"
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
         }
       }
     );
@@ -64,9 +64,9 @@ class GetArticleAndUserToken extends React.Component {
         articleData: res[3].data
       });
       log.debug(this.state.token);
-      log.debug("Categories Tree:", this.state.categoriesTree);
-      log.debug("Tags:", this.state.tags);
-      log.debug("Article:", this.state.articleData);
+      log.debug('Categories Tree:', this.state.categoriesTree);
+      log.debug('Tags:', this.state.tags);
+      log.debug('Article:', this.state.articleData);
     });
   }
 
@@ -74,9 +74,9 @@ class GetArticleAndUserToken extends React.Component {
     const { isLoading, categoriesTree, tags, token, articleData } = this.state;
     if (isLoading) return <Loading />;
     return (
-      <Section>
-        <Container>
-          <Heading>Edit Article</Heading>
+      <React.Fragment>
+        <Container className="header">
+          <Heading className="has-text-centered">แก้ไขบทความ</Heading>
         </Container>
         <Container>
           <ArticleForm
@@ -86,7 +86,7 @@ class GetArticleAndUserToken extends React.Component {
             articleData={articleData}
           />
         </Container>
-      </Section>
+      </React.Fragment>
     );
   }
 }

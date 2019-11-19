@@ -1,10 +1,15 @@
-import React from "react";
-import PropTypes from "prop-types";
-import ArticleDetails from "./../Components/ArticleDetails";
+import React from 'react';
+import PropTypes from 'prop-types';
+import ArticleDetails from './../Components/ArticleDetails';
+import { Section } from 'react-bulma-components';
 
 class Article extends React.Component {
   render() {
-    return <ArticleDetails articleId={this.props.match.params.id} />;
+    return (
+      <Section>
+        <ArticleDetails articleId={this.props.match.params.id} />
+      </Section>
+    );
   }
 }
 

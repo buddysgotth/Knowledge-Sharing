@@ -1,7 +1,7 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
-import { Form, Button } from "react-bulma-components";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { Form, Button } from 'react-bulma-components';
 
 const CreateButtonForm = ({ onSubmit, data }) => {
   const handleSubmit = event => {
@@ -12,9 +12,11 @@ const CreateButtonForm = ({ onSubmit, data }) => {
     const { title, category, tags, content } = data;
     if (
       title &&
-      (category && category !== "0") &&
+      category &&
+      category !== '0' &&
       tags &&
-      (content && content !== "<p><br></p>")
+      content &&
+      content !== '<p><br></p>'
     ) {
       return false;
     }
@@ -28,20 +30,18 @@ const CreateButtonForm = ({ onSubmit, data }) => {
           color="info"
           value="draft"
           onClick={handleSubmit}
-          disabled={isDisabled(data)}
-        >
-          Draft Post
+          disabled={isDisabled(data)}>
+          ร่าง
         </Button>
         <Button
           color="success"
           value="publish"
           onClick={handleSubmit}
-          disabled={isDisabled(data)}
-        >
-          Create Post
+          disabled={isDisabled(data)}>
+          สร้าง
         </Button>
         <Link to="/articles?page=1">
-          <Button color="light">Back</Button>
+          <Button color="light">ยกเลิก</Button>
         </Link>
       </Button.Group>
     </Form.Field>

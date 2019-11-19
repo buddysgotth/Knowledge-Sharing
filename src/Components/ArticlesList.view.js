@@ -1,7 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import ArticleCard from "./ArticleCard";
+import ArticleCard from './ArticleCard';
 
 const ArticlesListView = ({ articles, authors, categories, tags }) => {
   const filterAuthorByArticleID = id => {

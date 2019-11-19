@@ -1,27 +1,26 @@
-import React from "react";
-import PropTypes from "prop-types";
-import log from "loglevel";
-import axios from "axios";
+import React from 'react';
+import PropTypes from 'prop-types';
+import log from 'loglevel';
+import axios from 'axios';
 import {
   Container,
-  Section,
   Heading,
   Columns,
   Button,
-  Form,
-  Icon
-} from "react-bulma-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+  Form
+  // Icon
+} from 'react-bulma-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faSearch,
   faAngleUp,
   faAngleDown
-} from "@fortawesome/free-solid-svg-icons";
+} from '@fortawesome/free-solid-svg-icons';
 
-import Loading from "./Loading";
-import AdvancedSearchForm from "./AdvancedSearchForm";
-import CompareArticlesData from "./CompareArticlesData";
-import PaginationController from "./PaginationController";
+import Loading from './Loading';
+import AdvancedSearchForm from './AdvancedSearchForm';
+import CompareArticlesData from './CompareArticlesData';
+import PaginationController from './PaginationController';
 
 class ArticlesList extends React.Component {
   state = {
@@ -37,7 +36,10 @@ class ArticlesList extends React.Component {
     currentPage: 1,
     totalPages: 1,
     totalArticles: 0,
-    search: this.props.search.split("+").join(" ")
+    search: this.props.search
+      .split('+')
+      .map(search => decodeURIComponent(search))
+      .join(' ')
   };
 
   componentDidMount() {
@@ -81,16 +83,16 @@ class ArticlesList extends React.Component {
             label: tag.name,
             id: tag.id
           })),
-          currentPage: Number(params.slice(params.indexOf("page") + 5)),
-          totalPages: Number(res[0].headers["x-wp-totalpages"]),
-          totalArticles: Number(res[0].headers["x-wp-total"])
+          currentPage: Number(params.slice(params.indexOf('page') + 5)),
+          totalPages: Number(res[0].headers['x-wp-totalpages']),
+          totalArticles: Number(res[0].headers['x-wp-total'])
         });
 
-        log.debug("All articles:", res[0]);
-        log.debug("Authors:", res[1].data);
-        log.debug("Categories:", res[2].data);
-        log.debug("Tags:", res[3].data);
-        log.debug("Options:", this.state.tagOptions);
+        log.debug('All articles:', res[0]);
+        log.debug('Authors:', res[1].data);
+        log.debug('Categories:', res[2].data);
+        log.debug('Tags:', res[3].data);
+        log.debug('Options:', this.state.tagOptions);
       })
       .catch(error => log.error(error));
   }
@@ -99,30 +101,41 @@ class ArticlesList extends React.Component {
     this.setState({ search: e.target.value });
   };
 
+  searching = searchInput => {
+    const { params } = this.state;
+    let oldParams = '';
+    if (params.indexOf('search') !== -1) {
+      const searchParams = params.slice(
+        params.indexOf('search'),
+        params.indexOf('&')
+      );
+      oldParams = params.slice(2 + searchParams.length, params.indexOf('page'));
+    } else {
+      oldParams = params.slice(1, params.indexOf('page'));
+    }
+    log.debug(oldParams);
+    window.location.search = `?search=${searchInput}&${oldParams}page=1`;
+  };
+
   handleOnSearch = e => {
-    if (e.key === "Enter") {
-      const { params } = this.state;
-      let oldParams = "";
+    if (e.key === 'Enter') {
       const searchInput = e.target.value
         .trim()
-        .split(" ")
-        .join("+");
+        .split(' ')
+        .join('+');
       log.debug(searchInput);
-      if (params.indexOf("search") !== -1) {
-        const searchParams = params.slice(
-          params.indexOf("search"),
-          params.indexOf("&")
-        );
-        oldParams = params.slice(
-          2 + searchParams.length,
-          params.indexOf("page")
-        );
-      } else {
-        oldParams = params.slice(1, params.indexOf("page"));
-      }
-      log.debug(oldParams);
-      window.location.search = `?search=${searchInput}&${oldParams}page=1`;
+      this.searching(searchInput);
     }
+  };
+
+  handleOnClick = () => {
+    const { search } = this.state;
+    const searchInput = search
+      .trim()
+      .split(' ')
+      .join('+');
+    log.debug(searchInput);
+    this.searching(searchInput);
   };
 
   handleToggle = () => {
@@ -132,11 +145,11 @@ class ArticlesList extends React.Component {
 
   handlePageChange = page => {
     const { params } = this.state;
-    if (params.indexOf("&page") !== -1) {
-      const oldParams = params.slice(0, params.indexOf("&page"));
+    if (params.indexOf('&page') !== -1) {
+      const oldParams = params.slice(0, params.indexOf('&page'));
       window.location.search = oldParams + `&page=${page}`;
     }
-    const oldParams = params.slice(0, params.indexOf("page"));
+    const oldParams = params.slice(0, params.indexOf('page'));
     window.location.search = oldParams + `page=${page}`;
   };
 
@@ -166,7 +179,8 @@ class ArticlesList extends React.Component {
       tagOptions,
       search,
       totalArticles,
-      params
+      params,
+      currentPage
     } = this.state;
 
     if (isLoading) {
@@ -174,34 +188,34 @@ class ArticlesList extends React.Component {
     }
 
     return (
-      <Section>
-        <Container>
-          <Heading>All Articles</Heading>
-        </Container>
-        <Container>
-          <Columns breakpoint="tablet">
+      <React.Fragment>
+        <Container className="search">
+          <Columns>
             <Columns.Column size={12}>
               <Columns breakpoint="mobile">
-                <Columns.Column>
-                  <Form.Control iconLeft>
+                <Columns.Column className="search-left">
+                  <Form.Control className="is-flex">
                     <Form.Input
                       size="medium"
-                      placeholder="Search article..."
+                      placeholder="ค้นหาบทความที่ต้องการ..."
                       value={search}
                       onChange={this.handleOnChange}
                       onKeyDown={this.handleOnSearch}
                     />
-                    <Icon align="left">
+                    <Button
+                      size="medium"
+                      color="link"
+                      onClick={this.handleOnClick}>
                       <FontAwesomeIcon icon={faSearch} />
-                    </Icon>
+                    </Button>
                   </Form.Control>
                 </Columns.Column>
-                <Columns.Column narrow>
+                <Columns.Column narrow className="search-right">
                   <Button
                     size="medium"
-                    color="light"
+                    color="white"
                     onClick={this.handleToggle}
-                  >
+                    className="toggle">
                     <FontAwesomeIcon
                       icon={isHidden ? faAngleDown : faAngleUp}
                     />
@@ -209,7 +223,7 @@ class ArticlesList extends React.Component {
                 </Columns.Column>
               </Columns>
             </Columns.Column>
-            <Columns.Column size={12} className={isHidden ? "is-hidden" : ""}>
+            <Columns.Column size={12} className={isHidden ? 'is-hidden' : ''}>
               <AdvancedSearchForm
                 categories={categoriesTree}
                 tagOptions={tagOptions}
@@ -217,9 +231,18 @@ class ArticlesList extends React.Component {
                 params={params}
               />
             </Columns.Column>
+          </Columns>
+        </Container>
+        <Container>
+          <Columns>
             <Columns.Column size={12}>
-              <Heading subtitle size={6}>
-                Result: {totalArticles} Article(s)
+              <Heading subtitle size={6} className="has-text-centered">
+                ผลลัพธ์: {totalArticles} บทความ{' '}
+                {totalArticles > 1 || currentPage !== 1
+                  ? `[บทความที่ ${1 + 10 * (currentPage - 1)}-${10 *
+                      (currentPage - 1) +
+                      articles.length}]`
+                  : ''}
               </Heading>
             </Columns.Column>
             <Columns.Column>
@@ -235,7 +258,7 @@ class ArticlesList extends React.Component {
             </Columns.Column>
           </Columns>
         </Container>
-      </Section>
+      </React.Fragment>
     );
   }
 }
@@ -251,12 +274,12 @@ ArticlesList.propTypes = {
 };
 
 ArticlesList.defaultProps = {
-  params: "",
-  search: "",
+  params: '',
+  search: '',
   select: {
-    category: "0",
+    category: '0',
     tags: null,
-    modified: "0"
+    modified: '0'
   }
 };
 

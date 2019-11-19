@@ -1,8 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
-import ArticlesListView from "./ArticlesList.view";
+import React from 'react';
+import PropTypes from 'prop-types';
+import ArticlesListView from './ArticlesList.view';
 
-import { Columns } from "react-bulma-components";
+import { Columns } from 'react-bulma-components';
 
 const CompareArticlesData = ({ articles, authors, categories, tags }) => {
   const authorIdList = articles.map(article => ({
@@ -46,7 +46,7 @@ const CompareArticlesData = ({ articles, authors, categories, tags }) => {
           return tag.id === tagId;
         })
         .map(tag => tag.name)
-        .join("")
+        .join('')
     )
   }));
 

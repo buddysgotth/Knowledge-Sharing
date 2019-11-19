@@ -1,8 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Form } from "react-bulma-components";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Form } from 'react-bulma-components';
 
-const CategoryForm = ({ onChange, value, categories }) => {
+const CategoryForm = ({ onChange, value, categories, placeholder }) => {
   const handleShowCategoriesOption = categories => {
     return categories.map(parent => (
       <optgroup key={parent.id} label={parent.name}>
@@ -24,9 +24,8 @@ const CategoryForm = ({ onChange, value, categories }) => {
       name="category"
       value={value}
       className="is-fullwidth"
-      onChange={handleChange}
-    >
-      <option value="0">Select a Category</option>
+      onChange={handleChange}>
+      <option value="0">{placeholder}</option>
       {handleShowCategoriesOption(categories)}
     </Form.Select>
   );
@@ -41,7 +40,8 @@ const CategoriesPropTypes = PropTypes.arrayOf(
         id: PropTypes.number,
         name: PropTypes.string
       })
-    )
+    ),
+    placeholder: PropTypes.string
   })
 );
 
