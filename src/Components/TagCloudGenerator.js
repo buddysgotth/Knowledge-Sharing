@@ -13,7 +13,9 @@ class TagCloudGenerator extends React.Component {
 
   componentDidMount() {
     axios
-      .get(`/wp-json/wp/v2/tags?orderby=count&order=desc&per_page=25`)
+      .get(
+        `/wp-json/wp/v2/tags?orderby=count&order=desc&per_page=25&hide_empty=true`
+      )
       .then(res => {
         this.setState({
           tags: res.data.map(tag => ({
