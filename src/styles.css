@@ -7,7 +7,7 @@
 }
 
 .navbar-logo {
-  max-width: 52px;
+  max-width: 165px;
 }
 
 .logo {
@@ -39,7 +39,7 @@
   box-shadow: none;
 }
 
-.navbar-end > .button.is-fullwidth {
+.navbar-end>.button.is-fullwidth {
   justify-content: flex-start;
 }
 
@@ -55,7 +55,7 @@
   max-width: 1024px;
 }
 
-.container > .logo {
+.container>.logo {
   max-width: 540px;
   padding: 2em;
 }
@@ -108,7 +108,7 @@
   padding-bottom: 0;
 }
 
-.container.article > div {
+.container.article>div {
   padding-left: 0;
   padding-right: 0;
 }

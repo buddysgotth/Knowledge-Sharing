@@ -11,8 +11,8 @@ const NavigationBar = () => {
     <Navbar fixed="top" className="navigation-bar">
       <Container className="navbar-inner">
         <Navbar.Brand>
-          <Navbar.Item color="white" className="navbar-logo" href="/">
-            <img src="/know-share-logo-only.svg" alt="logo" className="logo" />
+          <Navbar.Item className="navbar-logo" href="/">
+            <img src="/know-share-logo-v3.svg" alt="logo" className="logo" />
           </Navbar.Item>
           <Navbar.Burger
             onClick={handleToggle}
@@ -21,15 +21,11 @@ const NavigationBar = () => {
         </Navbar.Brand>
         <Navbar.Menu className={active ? 'is-active' : ''}>
           <Navbar.Container position="start">
-            <Navbar.Item color="white" href="/">
-              หน้าแรก
-            </Navbar.Item>
-            <Navbar.Item color="white" href="/articles?page=1">
-              รายชื่อบทความ
-            </Navbar.Item>
+            <Navbar.Item href="/">หน้าแรก</Navbar.Item>
+            <Navbar.Item href="/articles?page=1">รายชื่อบทความ</Navbar.Item>
           </Navbar.Container>
           <Navbar.Container position="end">
-            <Navbar.Item color="white" className="create" href="/create">
+            <Navbar.Item className="create" href="/create">
               <Button color="link">สร้างบทความ</Button>
             </Navbar.Item>
           </Navbar.Container>

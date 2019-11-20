@@ -68,7 +68,7 @@ class TagCloudView extends React.Component {
     return (
       <React.Fragment>
         <Container className="has-text-centered">
-          <img src="./know-share-logo-v2.svg" alt="logo" className="logo" />
+          <img src="./know-share-logo-v3.svg" alt="logo" className="logo" />
           <Heading>รู้แล้ว... อยากบอกต่อ</Heading>
         </Container>
         <Container className="tag-cloud has-text-centered">
