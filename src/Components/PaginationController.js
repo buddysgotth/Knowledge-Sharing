@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Button, Level } from "react-bulma-components";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Button, Level } from 'react-bulma-components';
 
 const PaginationController = ({ current, total, onChange }) => {
   const handleChangePage = page => {
@@ -11,25 +11,23 @@ const PaginationController = ({ current, total, onChange }) => {
       <Level.Side align="left">
         <Level.Item>
           <Button
-            className="is-marginless"
+            className="is-marginless paging"
             onClick={() => handleChangePage(current - 1)}
-            disabled={current === 1}
-          >
-            Prev
+            disabled={current === 1}>
+            ก่อนหน้า
           </Button>
         </Level.Item>
       </Level.Side>
       <Level.Item className="has-text-centered">
-        Page {current} / {total}
+        หน้า {current} / {total}
       </Level.Item>
       <Level.Side align="right">
         <Level.Item>
           <Button
-            className="is-marginless"
+            className="is-marginless paging"
             onClick={() => handleChangePage(current + 1)}
-            disabled={current === total}
-          >
-            Next
+            disabled={current === total}>
+            ถัดไป
           </Button>
         </Level.Item>
       </Level.Side>

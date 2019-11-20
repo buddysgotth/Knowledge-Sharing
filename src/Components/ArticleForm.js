@@ -1,41 +1,46 @@
-import React from "react";
-import axios from "axios";
-import log from "loglevel";
-import PropTypes from "prop-types";
-import { Form, Columns, Tile, Heading } from "react-bulma-components";
-import ReactQuill from "react-quill";
+import React from 'react';
+import axios from 'axios';
+import log from 'loglevel';
+import PropTypes from 'prop-types';
+import { Form, Columns, Tile, Heading, Content } from 'react-bulma-components';
+import ReactQuill from 'react-quill';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faExclamationTriangle,
+  faCheck
+} from '@fortawesome/free-solid-svg-icons';
 
-import TitleForm from "./TitleForm";
-import CategoryForm, { CategoriesPropTypes } from "./CategoryForm";
-import TagsInput, { TagsPropTypes } from "./TagsInput";
-import CreateButtonForm from "./CreateButtonForm";
-import EditButtonForm from "./EditButtonForm";
+import TitleForm from './TitleForm';
+import CategoryForm, { CategoriesPropTypes } from './CategoryForm';
+import TagsInput, { TagsPropTypes } from './TagsInput';
+import CreateButtonForm from './CreateButtonForm';
+import EditButtonForm from './EditButtonForm';
 
 const modules = {
   toolbar: [
-    ["bold", "italic", "underline", "strike", "code"],
+    ['bold', 'italic', 'underline', 'strike', 'code'],
     [{ header: [1, 2, 3, false] }],
-    ["blockquote", "code-block"],
-    [({ list: "ordered" }, { list: "bullet" })],
-    ["link", "image"],
-    ["clean"]
+    ['blockquote', 'code-block'],
+    [({ list: 'ordered' }, { list: 'bullet' })],
+    ['link', 'image'],
+    ['clean']
   ]
 };
 
 const formats = [
-  "bold",
-  "italic",
-  "underline",
-  "strike",
-  "code",
-  "header",
-  "blockquote",
-  "code-block",
-  "list",
-  "bullet",
-  "indent",
-  "link",
-  "image"
+  'bold',
+  'italic',
+  'underline',
+  'strike',
+  'code',
+  'header',
+  'blockquote',
+  'code-block',
+  'list',
+  'bullet',
+  'indent',
+  'link',
+  'image'
 ];
 
 class ArticleForm extends React.Component {
@@ -47,7 +52,7 @@ class ArticleForm extends React.Component {
       category: articleData.categories[0].toString(),
       tags: tags.filter(tag => articleData.tags.includes(tag.id)),
       content: articleData.content.rendered,
-      status: "none"
+      status: 'none'
     };
     this.disabledForm = this.disabledForm.bind(this);
     this.showArticleCreatedStatus = this.showArticleCreatedStatus.bind(this);
@@ -58,38 +63,45 @@ class ArticleForm extends React.Component {
   }
 
   disabledForm = status => {
-    if (status === "creating") {
+    if (status === 'creating') {
       return true;
     }
     return false;
   };
   showArticleCreatedStatus = status => {
-    if (status === "publish") {
+    if (status === 'publish') {
       return (
         <Tile kind="parent" notification color="success">
-          <Heading subtitle>Create this article complete</Heading>
+          <Heading subtitle>
+            <FontAwesomeIcon icon={faCheck} /> สร้างบทความสำเร็จ
+          </Heading>
         </Tile>
       );
     }
-    if (status === "updated") {
+    if (status === 'updated') {
       return (
         <Tile kind="parent" notification color="success">
-          <Heading subtitle>Update this article complete</Heading>
+          <Heading subtitle>
+            <FontAwesomeIcon icon={faCheck} /> แก้ไขบทความสำเร็จ
+          </Heading>
         </Tile>
       );
     }
-    if (status === "draft") {
+    if (status === 'draft') {
       return (
         <Tile kind="parent" notification color="info">
-          <Heading subtitle>Draft this article complete</Heading>
+          <Heading subtitle>
+            <FontAwesomeIcon icon={faCheck} /> ร่างบทความสำเร็จ
+          </Heading>
         </Tile>
       );
     }
-    if (status === "failed") {
+    if (status === 'failed') {
       return (
         <Tile kind="parent" notification color="danger">
           <Heading subtitle>
-            Cannot creating this article. Please try again later.
+            <FontAwesomeIcon icon={faExclamationTriangle} />{' '}
+            ไม่สามารถสร้างบทความได้ กรุณาตรวจสอบและลองใหม่อีกครั้ง
           </Heading>
         </Tile>
       );
@@ -116,20 +128,20 @@ class ArticleForm extends React.Component {
     );
   };
   handleTagsChange = tags => {
-    this.setState({ status: "none", tags: tags });
+    this.setState({ status: 'none', tags: tags });
   };
   handleOnChange = e => {
-    this.setState({ status: "none", [e.target.name]: e.target.value });
+    this.setState({ status: 'none', [e.target.name]: e.target.value });
   };
   textEditorOnChange = value => {
-    this.setState({ status: "none", content: value });
+    this.setState({ status: 'none', content: value });
   };
   handleSubmit = async e => {
     log.debug(e.target.value);
     const { title, category, tags, content } = this.state;
     const { articleData } = this.props;
     const status = e.target.value;
-    this.setState({ status: "creating" });
+    this.setState({ status: 'creating' });
     if (articleData.id) {
       await axios
         .post(
@@ -143,24 +155,24 @@ class ArticleForm extends React.Component {
           },
           {
             headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
               Authorization: `Bearer ${this.props.token}`
             }
           }
         )
         .then(res => {
           log.debug(res);
-          this.setState({ status: "updated" });
+          this.setState({ status: 'updated' });
         })
         .catch(error => {
           log.error();
-          this.setState({ status: "failed" });
+          this.setState({ status: 'failed' });
         });
     } else {
       await axios
         .post(
-          "/wp-json/wp/v2/articles",
+          '/wp-json/wp/v2/articles',
           {
             title: title,
             categories: [Number(category)],
@@ -171,8 +183,8 @@ class ArticleForm extends React.Component {
           },
           {
             headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
               Authorization: `Bearer ${this.props.token}`
             }
           }
@@ -183,7 +195,7 @@ class ArticleForm extends React.Component {
         })
         .catch(error => {
           log.error();
-          this.setState({ status: "failed" });
+          this.setState({ status: 'failed' });
         });
     }
     window.scrollTo(0, 0);
@@ -198,17 +210,18 @@ class ArticleForm extends React.Component {
         <fieldset disabled={this.disabledForm(status)}>
           <TitleForm onChange={this.handleOnChange} value={title} />
           <Columns>
-            <Columns.Column>
+            <Columns.Column size={6}>
               <Form.Field>
-                <Form.Label>Category</Form.Label>
+                <Form.Label>หมวดหมู่</Form.Label>
                 <CategoryForm
                   onChange={this.handleOnChange}
                   value={category}
                   categories={categories}
+                  placeholder="เลือกหมวดหมู่..."
                 />
               </Form.Field>
             </Columns.Column>
-            <Columns.Column>
+            <Columns.Column size={6}>
               <TagsInput
                 token={this.props.token}
                 value={tags}
@@ -218,15 +231,17 @@ class ArticleForm extends React.Component {
             </Columns.Column>
           </Columns>
           <Form.Field>
-            <Form.Label>Description</Form.Label>
-            <ReactQuill
-              value={content}
-              onChange={this.textEditorOnChange}
-              modules={modules}
-              formats={formats}
-              placeholder="What do you want to share..."
-              readOnly={this.disabledForm(status)}
-            />
+            <Form.Label>เนื้อหาบทความ</Form.Label>
+            <Content>
+              <ReactQuill
+                value={content}
+                onChange={this.textEditorOnChange}
+                modules={modules}
+                formats={formats}
+                placeholder="คุณต้องการที่จะบอกต่อสิ่งใด..."
+                readOnly={this.disabledForm(status)}
+              />
+            </Content>
           </Form.Field>
           {this.renderButtonForm()}
         </fieldset>
@@ -256,10 +271,10 @@ ArticleForm.propTypes = {
 ArticleForm.defaultProps = {
   articleData: {
     id: null,
-    title: { rendered: "" },
+    title: { rendered: '' },
     categories: [0],
     tags: [],
-    content: { rendered: "" }
+    content: { rendered: '' }
   }
 };
 

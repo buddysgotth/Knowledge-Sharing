@@ -1,9 +1,9 @@
-import React from "react";
-import axios from "axios";
-import log from "loglevel";
-import PropTypes from "prop-types";
-import { Form } from "react-bulma-components";
-import CreatableSelect from "react-select/creatable";
+import React from 'react';
+import axios from 'axios';
+import log from 'loglevel';
+import PropTypes from 'prop-types';
+import { Form } from 'react-bulma-components';
+import CreatableSelect from 'react-select/creatable';
 
 var newOption = null;
 
@@ -13,7 +13,7 @@ class TagsInput extends React.Component {
     options: this.props.options
   };
   handleChange = (newValue: any, actionMeta: any) => {
-    console.group("Value Changed");
+    console.group('Value Changed');
     log.debug(newValue);
     log.debug(`action: ${actionMeta.action}`);
     console.groupEnd();
@@ -22,18 +22,18 @@ class TagsInput extends React.Component {
 
   handleCreate = async (inputValue: any) => {
     this.setState({ isLoading: true });
-    console.group("Option created");
+    console.group('Option created');
     log.debug(inputValue);
-    log.debug("Wait a moment...");
+    log.debug('Wait a moment...');
 
     await axios
       .post(
-        "/wp-json/wp/v2/tags",
+        '/wp-json/wp/v2/tags',
         { name: inputValue },
         {
           headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
             Authorization: `Bearer ${this.props.token}`
           }
         }
@@ -49,7 +49,7 @@ class TagsInput extends React.Component {
       .catch(error => log.error());
 
     await axios
-      .get("/wp-json/wp/v2/tags?per_page=100")
+      .get('/wp-json/wp/v2/tags?per_page=100')
       .then(res => {
         if (this.props.value) {
           this.props.onChange([...this.props.value, newOption]);
@@ -73,7 +73,7 @@ class TagsInput extends React.Component {
     const { isLoading, options } = this.state;
     return (
       <Form.Field>
-        <Form.Label>Tags</Form.Label>
+        <Form.Label>แท็ก</Form.Label>
         <CreatableSelect
           isClearable
           isDisabled={isLoading}
@@ -83,6 +83,8 @@ class TagsInput extends React.Component {
           options={options}
           value={this.props.value}
           isMulti={true}
+          placeholder="เลือกแท็กหรือสร้างแท็กใหม่..."
+          className="tags-select"
         />
       </Form.Field>
     );

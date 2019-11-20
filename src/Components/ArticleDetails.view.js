@@ -1,13 +1,20 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import {
   Container,
-  Section,
   Heading,
   Content,
-  Box
-} from "react-bulma-components";
+  Box,
+  Columns
+} from 'react-bulma-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faUser,
+  faFolder,
+  faTags,
+  faClock
+} from '@fortawesome/free-solid-svg-icons';
 
 const ArticleView = ({
   id,
@@ -20,39 +27,43 @@ const ArticleView = ({
 }) => {
   const updatedDate = new Date(modifiedDate);
 
-  const options = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric"
-  };
-
   return (
-    <Section>
-      <Container>
-        <Box className="is-shadowless is-marginless">
-          <Heading className="has-text-centered">{title}</Heading>
-        </Box>
-        <Box className="is-shadowless is-marginless">
-          <div>Author: {author}</div>
-          <div>Category: {category}</div>
-          <div>Tags: {tags.join(", ")}</div>
-          <div>
-            Updated date: {updatedDate.toLocaleString("en-US", options)}
-          </div>
-          <div>
-            <Link to={`/edit/${id}`}>Edit Article</Link>
-          </div>
-        </Box>
-        <Box className="is-shadowless is-marginless">
-          <Content>
-            <div dangerouslySetInnerHTML={{ __html: contents }} />
-          </Content>
-        </Box>
-      </Container>
-    </Section>
+    <Container className="article">
+      <Heading className="has-text-centered">{title}</Heading>
+      <Box className="is-shadowless is-marginless">
+        <Columns>
+          <Columns.Column narrow className="article-info">
+            <div>
+              <FontAwesomeIcon icon={faFolder} /> : {category}
+            </div>
+          </Columns.Column>
+          <Columns.Column narrow className="article-info">
+            <div>
+              <FontAwesomeIcon icon={faTags} /> : {tags.join(', ')}
+            </div>
+          </Columns.Column>
+          <Columns.Column narrow className="article-info">
+            <div>
+              <FontAwesomeIcon icon={faUser} /> : {author}
+            </div>
+          </Columns.Column>
+          <Columns.Column narrow className="article-info">
+            <div>
+              <FontAwesomeIcon icon={faClock} /> :{' '}
+              {updatedDate.toLocaleString('th-TH')}
+            </div>
+          </Columns.Column>
+          <Columns.Column narrow className="article-info">
+            <Link to={`/edit/${id}`}>แก้ไข</Link>
+          </Columns.Column>
+        </Columns>
+      </Box>
+      <Box className="is-shadowless is-marginless">
+        <Content>
+          <div dangerouslySetInnerHTML={{ __html: contents }} />
+        </Content>
+      </Box>
+    </Container>
   );
 };
 

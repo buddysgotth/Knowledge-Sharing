@@ -1,10 +1,15 @@
-import React from "react";
-import PropTypes from "prop-types";
-import GetArticleAndUserToken from "./../Components/GetArticleAndUserToken";
+import React from 'react';
+import PropTypes from 'prop-types';
+import GetArticleAndUserToken from './../Components/GetArticleAndUserToken';
+import { Section } from 'react-bulma-components';
 
 class EditArticle extends React.Component {
   render() {
-    return <GetArticleAndUserToken articleId={this.props.match.params.id} />;
+    return (
+      <Section>
+        <GetArticleAndUserToken articleId={this.props.match.params.id} />
+      </Section>
+    );
   }
 }
 
