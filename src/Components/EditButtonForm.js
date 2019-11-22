@@ -27,13 +27,20 @@ const EditButtonForm = ({ onSubmit, id, data }) => {
     <Form.Field kind="group" className="is-grouped-right">
       <Button.Group>
         <Button
-          color="success"
-          value="publish"
+          color="info"
+          value="draft"
           onClick={handleSubmit}
           disabled={isDisabled(data)}>
-          อัพเดตบทความ
+          ร่าง
         </Button>
-        <Link to={`/article/${id}`}>
+        <Button
+          color="success"
+          value="updated"
+          onClick={handleSubmit}
+          disabled={isDisabled(data)}>
+          อัพเดต
+        </Button>
+        <Link to={`/dashboard`}>
           <Button color="light">ยกเลิก</Button>
         </Link>
       </Button.Group>

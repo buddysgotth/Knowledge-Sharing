@@ -101,7 +101,7 @@ class ArticleForm extends React.Component {
         <Tile kind="parent" notification color="danger">
           <Heading subtitle>
             <FontAwesomeIcon icon={faExclamationTriangle} />{' '}
-            ไม่สามารถสร้างบทความได้ กรุณาตรวจสอบและลองใหม่อีกครั้ง
+            ไม่สามารถสร้าง/แก้ไขบทความได้ กรุณาตรวจสอบและลองใหม่อีกครั้ง
           </Heading>
         </Tile>
       );
@@ -151,7 +151,7 @@ class ArticleForm extends React.Component {
             categories: [Number(category)],
             tags: tags.map(tag => tag.id),
             content: content,
-            status: e.target.value
+            status: e.target.value === 'updated' ? 'publish' : e.target.value
           },
           {
             headers: {
@@ -163,7 +163,7 @@ class ArticleForm extends React.Component {
         )
         .then(res => {
           log.debug(res);
-          this.setState({ status: 'updated' });
+          this.setState({ status: status });
         })
         .catch(error => {
           log.error();

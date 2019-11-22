@@ -15,6 +15,9 @@ import Article from './Route/Article';
 import AllArticles from './Route/AllArticles';
 import CreateArticle from './Route/Create';
 import EditArticle from './Route/Edit';
+import Login from './Route/Login';
+import Logout from './Route/Logout';
+import Dashboard from './Route/Dashboard';
 
 const options = {
   fontFamilyBase:
@@ -43,6 +46,9 @@ function App() {
             <Route path="/articles/" component={AllArticles} />
             <Route path="/create/" component={CreateArticle} />
             <Route path="/edit/:id" component={EditArticle} />
+            <Route path="/login" component={Login} />
+            <Route path="/logout" component={Logout} />
+            <Route path="/dashboard" component={Dashboard} />
             <Route path="/" exact component={Home} />
           </Switch>
         </div>

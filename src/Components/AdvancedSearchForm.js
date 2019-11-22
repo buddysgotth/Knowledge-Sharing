@@ -66,8 +66,7 @@ class AdvancedSearchForm extends React.Component {
 
   render() {
     const { category, tags, modified } = this.state;
-    const { tagOptions, categories, select } = this.props;
-    log.debug(select);
+    const { tagOptions, categories } = this.props;
     return (
       <Columns>
         <Columns.Column className="search-column">

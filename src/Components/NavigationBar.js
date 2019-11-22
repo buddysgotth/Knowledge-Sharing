@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Navbar, Button, Container } from 'react-bulma-components';
 
+import UserButton from './UserNavbarButton';
+
 const NavigationBar = () => {
   const [active, setActive] = useState(false);
   const handleToggle = () => {
@@ -28,6 +30,7 @@ const NavigationBar = () => {
             <Navbar.Item className="create" href="/create">
               <Button color="link">สร้างบทความ</Button>
             </Navbar.Item>
+            <UserButton />
           </Navbar.Container>
         </Navbar.Menu>
       </Container>

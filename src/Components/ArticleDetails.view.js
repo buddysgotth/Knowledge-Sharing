@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import {
   Container,
   Heading,
@@ -52,9 +51,6 @@ const ArticleView = ({
               <FontAwesomeIcon icon={faClock} /> :{' '}
               {updatedDate.toLocaleString('th-TH')}
             </div>
-          </Columns.Column>
-          <Columns.Column narrow className="article-info">
-            <Link to={`/edit/${id}`}>แก้ไข</Link>
           </Columns.Column>
         </Columns>
       </Box>
