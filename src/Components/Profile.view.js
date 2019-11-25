@@ -3,7 +3,7 @@ import { Container, Heading } from 'react-bulma-components';
 
 import MyArticles from './MyArticlesCard';
 
-const ProfileView = ({ categories, tags, articles }) => {
+const ProfileView = ({ categories, tags, articles, token }) => {
   return (
     <React.Fragment>
       <Container className="header">
@@ -21,6 +21,7 @@ const ProfileView = ({ categories, tags, articles }) => {
             categories={categories}
             tags={tags}
             key={article.id}
+            token={token}
           />
         ))}
       </Container>

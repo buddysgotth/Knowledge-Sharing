@@ -178,7 +178,7 @@ class ArticleForm extends React.Component {
             categories: [Number(category)],
             tags: tags.map(tag => tag.id),
             content: content,
-            author: 1,
+            author: this.props.id,
             status: e.target.value
           },
           {

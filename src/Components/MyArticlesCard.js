@@ -1,11 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Heading, Box, Columns, Button } from 'react-bulma-components';
 import { Link } from 'react-router-dom';
+import log from 'loglevel';
+import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolder, faTags, faClock } from '@fortawesome/free-solid-svg-icons';
-const MyArticles = ({ article, categories, tags }) => {
+
+import DeleteConfirmationModal from './DeleteConfirmationModal';
+const MyArticles = ({ article, categories, tags, token }) => {
+  const [showPopup, setShowPopup] = useState(false);
+
   const updatedDate = new Date(article.modified);
   const drafted = article.status === 'draft';
+
+  const open = () => setShowPopup(true);
+  const close = () => setShowPopup(false);
+
+  const handleDelete = () => {
+    axios
+      .delete(`wp-json/wp/v2/articles/${article.id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then(res => {
+        log.debug(res.data);
+        window.location = '/dashboard';
+      })
+      .catch(error => log.error(error));
+  };
 
   const preview = article.excerpt.rendered.replace(/<p>|<\/p>/gi, '');
   return (
@@ -18,7 +39,22 @@ const MyArticles = ({ article, categories, tags }) => {
         </Columns.Column>
         <Columns.Column narrow>
           <Heading size={6}>
-            <Link to={`/edit/${article.id}`}>แก้ไข</Link>
+            <Link to={`/edit/${article.id}`}>
+              <Button size="small" color="light">
+                แก้ไข
+              </Button>
+            </Link>
+            <span>
+              <Button size="small" color="danger" onClick={open}>
+                ลบ
+              </Button>
+              <DeleteConfirmationModal
+                onClose={close}
+                show={showPopup}
+                onDelete={handleDelete}
+                title={article.title.rendered}
+              />
+            </span>
           </Heading>
         </Columns.Column>
       </Columns>
