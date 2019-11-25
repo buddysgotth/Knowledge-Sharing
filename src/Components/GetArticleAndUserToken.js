@@ -16,22 +16,20 @@ class GetArticleAndUserToken extends React.Component {
   };
 
   componentDidMount() {
+    const { token } = this.props;
     const getArticle = axios.get(
-      `/wp-json/wp/v2/articles/${this.props.articleId}`
-    );
-    const getCategory = axios.get(`/wp-json/wp/v2/categories?per_page=100`);
-    const getTags = axios.get(`/wp-json/wp/v2/tags?per_page=100`);
-    const getToken = axios.post(
-      '/wp-json/jwt-auth/v1/token',
-      { username: 'admin-kb', password: 'know-share-kb' },
+      `/wp-json/wp/v2/articles/${this.props.articleId}`,
       {
         headers: {
           'Content-Type': 'application/json',
-          Accept: 'application/json'
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`
         }
       }
     );
-    Promise.all([getCategory, getTags, getToken, getArticle]).then(res => {
+    const getCategory = axios.get(`/wp-json/wp/v2/categories?per_page=100`);
+    const getTags = axios.get(`/wp-json/wp/v2/tags?per_page=100`);
+    Promise.all([getCategory, getTags, getArticle]).then(res => {
       const categories = res[0].data;
       const tempCategoriesTree = categories
         .filter(category => category.parent === 0 && category.id !== 1)
@@ -60,8 +58,8 @@ class GetArticleAndUserToken extends React.Component {
           label: tag.name,
           id: tag.id
         })),
-        token: res[2].data.token,
-        articleData: res[3].data
+        token: token,
+        articleData: res[2].data
       });
       log.debug(this.state.token);
       log.debug('Categories Tree:', this.state.categoriesTree);

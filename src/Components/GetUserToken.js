@@ -17,17 +17,8 @@ class GetUserToken extends React.Component {
   componentDidMount() {
     const getCategory = axios.get(`/wp-json/wp/v2/categories?per_page=100`);
     const getTags = axios.get(`/wp-json/wp/v2/tags?per_page=100`);
-    const getToken = axios.post(
-      '/wp-json/jwt-auth/v1/token',
-      { username: 'admin-kb', password: 'know-share-kb' },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json'
-        }
-      }
-    );
-    Promise.all([getCategory, getTags, getToken]).then(res => {
+    const { token } = this.props;
+    Promise.all([getCategory, getTags]).then(res => {
       const categories = res[0].data;
       const tempCategoriesTree = categories
         .filter(category => category.parent === 0 && category.id !== 1)
@@ -56,7 +47,7 @@ class GetUserToken extends React.Component {
           label: tag.name,
           id: tag.id
         })),
-        token: res[2].data.token
+        token: token
       });
       log.debug(this.state.token);
       log.debug('Categories Tree:', this.state.categoriesTree);

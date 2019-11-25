@@ -52,12 +52,16 @@
 }
 
 .container {
-  max-width: 1024px;
+  max-width: 920px;
 }
 
 .container>.logo {
   max-width: 540px;
   padding: 2em;
+}
+
+.login-form {
+  max-width: 540px;
 }
 
 .search {
@@ -89,6 +93,7 @@
 }
 
 @media screen and (min-width: 1024px) {
+
   .create {
     padding-top: 0;
     padding-bottom: 0;

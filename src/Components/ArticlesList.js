@@ -8,7 +8,6 @@ import {
   Columns,
   Button,
   Form
-  // Icon
 } from 'react-bulma-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
