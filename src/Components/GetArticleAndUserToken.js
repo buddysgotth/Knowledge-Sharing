@@ -61,7 +61,6 @@ class GetArticleAndUserToken extends React.Component {
         token: token,
         articleData: res[2].data
       });
-      log.debug(this.state.token);
       log.debug('Categories Tree:', this.state.categoriesTree);
       log.debug('Tags:', this.state.tags);
       log.debug('Article:', this.state.articleData);

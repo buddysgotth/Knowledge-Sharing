@@ -129,6 +129,7 @@
 .ql-container,
 .ql-editor {
   font-size: 1em;
+  font-family: 'Sarabun', sans-serif;
 }
 
 .ql-snow .ql-editor code,
@@ -181,4 +182,8 @@ input,
 
 .paging {
   width: 90px;
+}
+
+.button.comfirmation {
+  width: 95px;
 }
