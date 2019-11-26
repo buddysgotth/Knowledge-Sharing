@@ -35,6 +35,7 @@ const GlobalStyle = createGlobalStyle`
 log.setLevel('debug');
 
 function App() {
+  log.debug(process.env);
   return (
     <div className="App">
       <GlobalStyle />
