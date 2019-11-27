@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import urljoin from 'url-join';
 import log from 'loglevel';
 import { Container, Heading } from 'react-bulma-components';
 import Loading from './Loading';
@@ -18,7 +19,7 @@ class GetArticleAndUserToken extends React.Component {
   componentDidMount() {
     const { token } = this.props;
     const getArticle = axios.get(
-      `/wp-json/wp/v2/articles/${this.props.articleId}`,
+      urljoin(process.env.REACT_APP_ARTICLES_API_URL, this.props.articleId),
       {
         headers: {
           'Content-Type': 'application/json',
@@ -27,9 +28,16 @@ class GetArticleAndUserToken extends React.Component {
         }
       }
     );
-    const getCategory = axios.get(`/wp-json/wp/v2/categories?per_page=100`);
-    const getTags = axios.get(`/wp-json/wp/v2/tags?per_page=100`);
-    Promise.all([getCategory, getTags, getArticle]).then(res => {
+    const getCategories = axios.get(
+      urljoin(
+        process.env.REACT_APP_CATEGORIES_API_URL,
+        process.env.REACT_APP_GET_ALL
+      )
+    );
+    const getTags = axios.get(
+      urljoin(process.env.REACT_APP_TAGS_API_URL, process.env.REACT_APP_GET_ALL)
+    );
+    Promise.all([getCategories, getTags, getArticle]).then(res => {
       const categories = res[0].data;
       const tempCategoriesTree = categories
         .filter(category => category.parent === 0 && category.id !== 1)

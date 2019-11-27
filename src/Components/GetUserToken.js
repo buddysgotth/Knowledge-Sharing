@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import urljoin from 'url-join';
 import log from 'loglevel';
 import { Container, Heading } from 'react-bulma-components';
 import Loading from './Loading';
@@ -27,11 +28,20 @@ class GetUserToken extends React.Component {
     } else {
       slug = document.cookie.slice(slugIndex + 5);
     }
-    const getCategory = axios.get(`/wp-json/wp/v2/categories?per_page=100`);
-    const getTags = axios.get(`/wp-json/wp/v2/tags?per_page=100`);
-    const getUser = axios.get(`/wp-json/wp/v2/users?slug=${slug}`);
+    const getCategories = axios.get(
+      urljoin(
+        process.env.REACT_APP_CATEGORIES_API_URL,
+        process.env.REACT_APP_GET_ALL
+      )
+    );
+    const getTags = axios.get(
+      urljoin(process.env.REACT_APP_TAGS_API_URL, process.env.REACT_APP_GET_ALL)
+    );
+    const getUser = axios.get(
+      urljoin(process.env.REACT_APP_USERS_API_URL, `?slug=${slug}`)
+    );
     const { token } = this.props;
-    Promise.all([getCategory, getTags, getUser]).then(res => {
+    Promise.all([getCategories, getTags, getUser]).then(res => {
       const categories = res[0].data;
       const tempCategoriesTree = categories
         .filter(category => category.parent === 0 && category.id !== 1)
@@ -60,7 +70,7 @@ class GetUserToken extends React.Component {
           label: tag.name,
           id: tag.id
         })),
-        userId: res[2].data[0].id,
+        userId: res[2].data.id,
         token: token
       });
       log.debug('Categories Tree:', this.state.categoriesTree);

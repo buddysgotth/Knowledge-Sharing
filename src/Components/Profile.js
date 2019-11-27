@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import urljoin from 'url-join';
 import log from 'loglevel';
 import PropTypes from 'prop-types';
 
@@ -25,7 +26,10 @@ class Profile extends React.Component {
     }
     axios
       .get(
-        `wp-json/wp/v2/articles?author=${id}&status=publish+draft&per_page=100`,
+        urljoin(
+          process.env.REACT_APP_ARTICLES_API_URL,
+          `?author=${id}&status=publish+draft&per_page=100`
+        ),
         { headers: { Authorization: `Bearer ${token}` } }
       )
       .then(res => {

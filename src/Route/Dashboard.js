@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import urljoin from 'url-join';
 import log from 'loglevel';
 import { Section } from 'react-bulma-components';
 
@@ -27,11 +28,20 @@ class Dashboard extends React.Component {
       slug = document.cookie.slice(slugIndex + 5);
     }
     log.debug(slug);
-    const getUser = axios.get(`/wp-json/wp/v2/users?slug=${slug}`);
-    const getCategory = axios.get(`/wp-json/wp/v2/categories?per_page=100`);
-    const getTags = axios.get(`/wp-json/wp/v2/tags?per_page=100`);
+    const getUser = axios.get(
+      urljoin(process.env.REACT_APP_USERS_API_URL, `?slug=${slug}`)
+    );
+    const getCategories = axios.get(
+      urljoin(
+        process.env.REACT_APP_CATEGORIES_API_URL,
+        process.env.REACT_APP_GET_ALL
+      )
+    );
+    const getTags = axios.get(
+      urljoin(process.env.REACT_APP_TAGS_API_URL, process.env.REACT_APP_GET_ALL)
+    );
 
-    Promise.all([getUser, getCategory, getTags]).then(res => {
+    Promise.all([getUser, getCategories, getTags]).then(res => {
       this.setState({
         id: res[0].data[0] ? res[0].data[0].id : 0,
         categories: res[1].data,
