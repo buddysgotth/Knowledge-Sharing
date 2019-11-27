@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import urljoin from 'url-join';
 import log from 'loglevel';
 
 import Loading from './Loading';
@@ -14,7 +15,10 @@ class TagCloudGenerator extends React.Component {
   componentDidMount() {
     axios
       .get(
-        `/wp-json/wp/v2/tags?orderby=count&order=desc&per_page=25&hide_empty=true`
+        urljoin(
+          process.env.REACT_APP_TAGS_API_URL,
+          '?orderby=count&order=desc&per_page=25&hide_empty=true'
+        )
       )
       .then(res => {
         this.setState({

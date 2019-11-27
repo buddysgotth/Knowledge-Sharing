@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import urljoin from 'url-join';
 import log from 'loglevel';
 import PropTypes from 'prop-types';
 import { Form, Columns, Tile, Heading, Content } from 'react-bulma-components';
@@ -145,7 +146,10 @@ class ArticleForm extends React.Component {
     if (articleData.id) {
       await axios
         .post(
-          `/wp-json/wp/v2/articles/${articleData.id}`,
+          urljoin(
+            process.env.REACT_APP_ARTICLES_API_URL,
+            articleData.id.toString()
+          ),
           {
             title: title,
             categories: [Number(category)],
@@ -172,7 +176,7 @@ class ArticleForm extends React.Component {
     } else {
       await axios
         .post(
-          '/wp-json/wp/v2/articles',
+          process.env.REACT_APP_ARTICLES_API_URL,
           {
             title: title,
             categories: [Number(category)],

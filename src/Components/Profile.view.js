@@ -29,4 +29,6 @@ const ProfileView = ({ categories, tags, articles, token }) => {
   );
 };
 
+ProfileView.propTypes = MyArticles.propTypes;
+
 export default ProfileView;

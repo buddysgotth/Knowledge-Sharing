@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import urljoin from 'url-join';
 import log from 'loglevel';
 import PropTypes from 'prop-types';
 import { Form } from 'react-bulma-components';
@@ -28,7 +29,7 @@ class TagsInput extends React.Component {
 
     await axios
       .post(
-        '/wp-json/wp/v2/tags',
+        process.env.REACT_APP_TAGS_API_URL,
         { name: inputValue },
         {
           headers: {
@@ -49,7 +50,12 @@ class TagsInput extends React.Component {
       .catch(error => log.error());
 
     await axios
-      .get('/wp-json/wp/v2/tags?per_page=100')
+      .get(
+        urljoin(
+          process.env.REACT_APP_TAGS_API_URL,
+          process.env.REACT_APP_GET_ALL
+        )
+      )
       .then(res => {
         if (this.props.value) {
           this.props.onChange([...this.props.value, newOption]);

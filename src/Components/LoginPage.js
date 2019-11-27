@@ -45,7 +45,7 @@ class LoginPage extends React.Component {
     };
     this.setState({ isLoading: true });
     await axios
-      .post('/wp-json/jwt-auth/v1/token', loginData, {
+      .post(process.env.REACT_APP_AUTHORIZATION_URL, loginData, {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json'

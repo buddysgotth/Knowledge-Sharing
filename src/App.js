@@ -32,7 +32,7 @@ const GlobalStyle = createGlobalStyle`
   ${rebootCss}
 `;
 
-log.setLevel('debug');
+log.setLevel(process.env.REACT_APP_SET_LOG_LEVEL);
 
 function App() {
   log.debug(process.env);

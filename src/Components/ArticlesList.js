@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import log from 'loglevel';
 import axios from 'axios';
+import urljoin from 'url-join';
 import {
   Container,
   Heading,
@@ -43,12 +44,26 @@ class ArticlesList extends React.Component {
 
   componentDidMount() {
     const { params } = this.state;
-    const getArticlesList = axios.get(`/wp-json/wp/v2/articles${params}`);
-    const getAuthor = axios.get(`/wp-json/wp/v2/users?per_page=100`);
-    const getCategory = axios.get(`/wp-json/wp/v2/categories?per_page=100`);
-    const getTags = axios.get(`/wp-json/wp/v2/tags?per_page=100`);
+    const getArticlesList = axios.get(
+      urljoin(process.env.REACT_APP_ARTICLES_API_URL, params)
+    );
+    const getAuthor = axios.get(
+      urljoin(
+        process.env.REACT_APP_USERS_API_URL,
+        process.env.REACT_APP_GET_ALL
+      )
+    );
+    const getCategories = axios.get(
+      urljoin(
+        process.env.REACT_APP_CATEGORIES_API_URL,
+        process.env.REACT_APP_GET_ALL
+      )
+    );
+    const getTags = axios.get(
+      urljoin(process.env.REACT_APP_TAGS_API_URL, process.env.REACT_APP_GET_ALL)
+    );
 
-    Promise.all([getArticlesList, getAuthor, getCategory, getTags])
+    Promise.all([getArticlesList, getAuthor, getCategories, getTags])
       .then(res => {
         const categories = res[2].data;
         const categoriesTree = categories

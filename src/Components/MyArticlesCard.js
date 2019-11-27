@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Heading, Box, Columns, Button } from 'react-bulma-components';
 import { Link } from 'react-router-dom';
 import log from 'loglevel';
 import axios from 'axios';
+import urljoin from 'url-join';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolder, faTags, faClock } from '@fortawesome/free-solid-svg-icons';
 
@@ -18,9 +20,12 @@ const MyArticles = ({ article, categories, tags, token }) => {
 
   const handleDelete = () => {
     axios
-      .delete(`wp-json/wp/v2/articles/${article.id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      .delete(
+        urljoin(process.env.REACT_APP_ARTICLES_API_URL, article.id.toString()),
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      )
       .then(res => {
         log.debug(res.data);
         window.location = '/dashboard';
@@ -85,6 +90,37 @@ const MyArticles = ({ article, categories, tags, token }) => {
       />
     </Box>
   );
+};
+
+MyArticles.propTypes = {
+  categories: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string
+    })
+  ),
+  tags: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string
+    })
+  ),
+  articles: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      title: PropTypes.shape({
+        rendered: PropTypes.string
+      }),
+      categories: PropTypes.arrayOf(PropTypes.number),
+      tags: PropTypes.arrayOf(PropTypes.number),
+      modified: PropTypes.string,
+      status: PropTypes.string,
+      excerpt: PropTypes.shape({
+        rendered: PropTypes.string
+      })
+    })
+  ),
+  token: PropTypes.string
 };
 
 export default MyArticles;
