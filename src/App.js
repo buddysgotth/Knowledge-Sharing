@@ -35,7 +35,7 @@ const GlobalStyle = createGlobalStyle`
 log.setLevel(process.env.REACT_APP_SET_LOG_LEVEL);
 
 function App() {
-  log.debug(process.env);
+  // log.debug(process.env);
   return (
     <div className="App">
       <GlobalStyle />
