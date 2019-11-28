@@ -15,6 +15,7 @@ const CreateButtonForm = ({ onSubmit, data }) => {
       category &&
       category !== '0' &&
       tags &&
+      tags.length !== 0 &&
       content &&
       content !== '<p><br></p>'
     ) {

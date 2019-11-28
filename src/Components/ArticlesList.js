@@ -25,7 +25,7 @@ import PaginationController from './PaginationController';
 class ArticlesList extends React.Component {
   state = {
     isLoading: true,
-    isHidden: false,
+    isHidden: true,
     articles: [],
     authors: [],
     categories: [],

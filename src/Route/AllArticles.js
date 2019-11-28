@@ -1,4 +1,5 @@
 import React from 'react';
+import log from 'loglevel';
 import ArticlesList from './../Components/ArticlesList';
 import { Section, Container, Heading } from 'react-bulma-components';
 
@@ -33,7 +34,7 @@ class AllArticles extends React.Component {
         (today - checkDate) / (1000 * 60 * 60 * 24)
       ).toString();
     }
-    console.log(select);
+    log.debug(select);
     return (
       <Section>
         <Container className="header">

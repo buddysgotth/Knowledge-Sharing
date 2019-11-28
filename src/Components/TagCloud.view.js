@@ -1,6 +1,7 @@
 import 'd3-transition';
 import { select } from 'd3-selection';
 import React from 'react';
+import log from 'loglevel';
 import { Container, Heading } from 'react-bulma-components';
 import ReactWordcloud from 'react-wordcloud';
 
@@ -39,7 +40,7 @@ class TagCloudView extends React.Component {
       text
         .on('click', () => {
           if (isActive) {
-            console.log(word.text);
+            log.debug(word.text);
             window.open(`/articles?tags=${word.id}&page=1`, '_self');
           }
         })
