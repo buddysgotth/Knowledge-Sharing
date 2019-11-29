@@ -14,7 +14,7 @@ const NavigationBar = () => {
       <Container className="navbar-inner">
         <Navbar.Brand>
           <Navbar.Item className="navbar-logo" href="/">
-            <img src="/know-share-logo-v3.svg" alt="logo" className="logo" />
+            <img src="/know-share-logo.svg" alt="logo" className="logo" />
           </Navbar.Item>
           <Navbar.Burger
             onClick={handleToggle}
